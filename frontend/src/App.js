@@ -6,7 +6,7 @@ import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
 import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Store } from './Store';
 import CartScreen from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
@@ -50,13 +50,13 @@ function App() {
   const logoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
-    localStorage.removeItem('cartItems');
+    // localStorage.removeItem('cartItems');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
     window.location.href = '/login';
   };
   //side bar nav
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+  //const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   // const [setCategories] = useState([]);
 
   // useEffect(() => {
@@ -75,24 +75,25 @@ function App() {
       <ToastContainer position="bottom-center" limit={0} />
       <div
         className={
-          sidebarIsOpen
-            ? fullBox
-              ? 'site-container d-flex flex-column active-cont full-box'
-              : 'site-container flex-column d-flex active-cont  '
-            : fullBox
-            ? 'site-container d-flex flex-column  full-box '
-            : 'site-container flex-column d-flex '
+          fullBox
+            ? 'site-container d-flex flex-column active-cont full-box'
+            : 'site-container flex-column d-flex   '
+          // : fullBox
+          // ? 'site-container d-flex flex-column  full-box '
+          // : 'site-container flex-column d-flex '
         }
       >
         <header>
           <Navbar expand="lg">
             <Container>
-              <Button
+              {/* <Button
                 variant="blue"
                 onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              ></Button>
+              ></Button> */}
               <Link to="/">
-                <Navbar.Brand> Shopee Day</Navbar.Brand>
+                <Navbar.Brand>
+                  <span className="white-color">Shopee Day</span>
+                </Navbar.Brand>
               </Link>
               &nbsp;
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -103,7 +104,7 @@ function App() {
                 <Nav className="justify-content-end">
                   <Link to="/cart" className="nav-link">
                     <i
-                      className="fa fa-shopping-cart"
+                      className="fa fa-shopping-cart white-color"
                       width="20"
                       height="20"
                     ></i>
@@ -197,7 +198,6 @@ function App() {
           <Container className="mt-3">
             <Routes>
               <Route path="/" element={<HomeScreen />} />
-              <Route path="/seller/:id" element={<SellerScreen />}></Route>
               <Route path="/product/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/login" element={<SigninScreen />} />
@@ -318,8 +318,15 @@ function App() {
         </main>
         <footer className="footer">
           {/* {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />} */}
-          <div className="text-center bg- text-black">
-            @2022 All rights reserved
+
+          <div
+            className="text-center p-4text-black"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
+          >
+            Created By <Link to="/"> Shwetha T H </Link> | © 2022 Copyright:
+            <Link className="text-reset fw-bold" to="https://mdbootstrap.com/">
+              All rights reserved.
+            </Link>
           </div>
         </footer>
       </div>

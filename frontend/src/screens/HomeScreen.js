@@ -11,6 +11,7 @@ import { getError } from '../utils';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Link } from 'react-router-dom';
+import Footer from '../components/Footer';
 //import CategoryHeader from './CategoryHeader';
 //usestate depends on previews state
 
@@ -72,9 +73,9 @@ function HomeScreen() {
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <>
-          <div className="carousel-slide">
+          <div className="carousel-slide container-fluid">
             <Row className="col-md-12 text-left">
-              <h3>Top Sellers</h3>{' '}
+              <h3>Top Sellers</h3>
             </Row>
             {sellers.length === 0 && <MessageBox>No Seller Found</MessageBox>}
             <Carousel
@@ -113,6 +114,7 @@ function HomeScreen() {
           </Row>
         </>
       )}
+      <Footer />
     </div>
   );
 }

@@ -43,11 +43,11 @@ export default function SigninScreen() {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
+    <Container className="small-container ">
       <Helmet>
         <title>Login </title>
       </Helmet>
-      <Row>
+      <Row className="justify-content-center">
         <Col className="login-image  col-md-6 shadow p-3 mb-5 bg-white rounded mt-n1-2">
           <Figure>
             <img

@@ -33,7 +33,7 @@ function Product(props) {
         <img src={product.image} className="card-img-top" alt={product.name} />
       </Link>
       {/* <Card.Body> */}
-      <Link to={`/product/${product.slug}`}>
+      <Link to={`/product/${product.slug}`} className="text-decoration-none">
         <span>{product.name}</span>
       </Link>
 
@@ -42,7 +42,10 @@ function Product(props) {
       <div>
         ₹{product.price} &nbsp;&nbsp;
         {product.seller && product.seller.seller && (
-          <Link to={`/seller/${product.seller._id}`}>
+          <Link
+            to={`/seller/${product.seller._id}`}
+            className="text-decoration-none"
+          >
             {product.seller.seller.name}
           </Link>
         )}

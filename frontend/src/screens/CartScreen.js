@@ -43,7 +43,7 @@ export default function CartScreen() {
       </Helmet>
       <h3>Shopping Cart</h3>
       <Row>
-        <Col md={7} className="shadow p-3 mb-5 bg-white rounded ms-2 border-0">
+        <Col md={8} className="shadow p-3 mb-5 bg-white rounded  border-0">
           {cartItems.length === 0 ? (
             <MessageBox>
               Cart is empty. <Link to="/">Go Shopping</Link>
@@ -53,15 +53,17 @@ export default function CartScreen() {
               {cartItems.map((item) => (
                 <ListGroup.Item key={item._id}>
                   <Row className="align-items-center ">
-                    <Col md={4}>
+                    <Col md={3} sm={4} xs={4} lg={4}>
                       <img
-                        src={item.image}
+                        src={item.image || item.images}
+                        width={100}
+                        height={50}
                         alt={item.name}
                         className="img-fluid rounded img-thumbnail"
-                      ></img>{' '}
+                      ></img>
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
-                    <Col md={3}>
+                    <Col md={4} sm={6} xs={4}>
                       <Button
                         onClick={() =>
                           updateCartHandler(item, item.quantity - 1)
@@ -70,8 +72,9 @@ export default function CartScreen() {
                         disabled={item.quantity === 1}
                       >
                         <i className="fas fa-minus-circle"></i>
-                      </Button>{' '}
-                      <span>{item.quantity}</span>{' '}
+                      </Button>
+                      &nbsp;
+                      <span>{item.quantity}</span>&nbsp;
                       <Button
                         variant="light"
                         onClick={() =>
@@ -82,9 +85,11 @@ export default function CartScreen() {
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    <Col md={3}>₹{item.price}</Col>
+                    <Col md={2} sm={2} xs={2}>
+                      ₹{item.price}
+                    </Col>
                     {/* <Col md={1}>₹{item.size}</Col> */}
-                    <Col md={2}>
+                    <Col md={2} sm={2} xs={2}>
                       <Button
                         onClick={() => removeItemHandler(item)}
                         variant="light"
@@ -99,7 +104,7 @@ export default function CartScreen() {
           )}
         </Col>
         <Col md={4}>
-          <Card className="shadow p-3 mb-5 bg-white rounded ms-2 border-0">
+          <Card className="shadow p-3 mb-5 bg-white rounded  border-0">
             <Card.Body>
               <ListGroup variant="flush">
                 <ListGroup.Item>

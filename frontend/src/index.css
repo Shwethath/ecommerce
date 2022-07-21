@@ -30,6 +30,12 @@ button .outline-primary {
   background-color: blue;
   color: #fff;
 }
+
+/*Navbar*/
+.white-color {
+  color: #fff;
+}
+
 /*Navbar jquery csss*/
 /* .navbar.sticky {
   padding: 15px 0;
@@ -96,11 +102,23 @@ button .outline-primary {
   margin-top: 30px;
 }
 .img-thumbnail {
-  height: 80px;
+  min-height: 80px;
 }
 .small-container {
   max-width: 600px;
 }
+/*Home page footer css*/
+.btn-circle.btn-sm {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  font-size: 8px;
+  text-align: center;
+}
+
+/*Order screen css*/
+
 /* multiple images css*/
 .multi-img {
   transition: all 0.3s ease;
@@ -234,7 +252,7 @@ button .thumbnail {
 /*top products css*/
 .bg-tpcolor {
   background-color: #f1eeee;
-  margin-top: 50px;
+  margin-top: 100px;
 }
 .carousel .slide {
   background-color: #ffffff;

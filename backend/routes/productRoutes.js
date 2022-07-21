@@ -53,18 +53,31 @@ productRouter.post(
   })
 );
 //sellerpage
+const SIZE = 2;
 productRouter.get(
   '/sellers/:id',
-  expressAsyncHandler(async ({ params }, res) => {
-    const products = await Product.find({ seller: params.id }).populate(
-      'seller',
-      'seller.name seller.logo seller.rating seller.numReviews'
-    );
-    res.send(products);
+  expressAsyncHandler(async (req, res) => {
+    const { query, params } = req;
+    const page = query.page || 1;
+    const pageSize = query.pageSize || SIZE;
+
+    const products = await Product.find({ seller: params.id })
+      .populate(
+        'seller',
+        'seller.name seller.logo seller.rating seller.numReviews'
+      )
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+    const countProducts = await Product.countDocuments({});
+    res.send({
+      products,
+      countProducts,
+      page,
+      pages: Math.ceil(countProducts / pageSize),
+    });
   })
 );
 const PAGE_SIZE = 4;
-
 productRouter.get(
   '/admin',
   isAuth,
@@ -134,11 +147,10 @@ productRouter.delete(
   })
 );
 
-/* Reviews */
+/* Reviews */ /*when customer updated reviews no isSellerOrAdmin is needed */
 productRouter.post(
   '/:id/reviews',
   isAuth,
-  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
     const product = await Product.findById(productId);
@@ -174,11 +186,12 @@ productRouter.post(
 /*products list api*/
 
 /*products search api*/
+const PAGE_SIZ = 2;
 productRouter.get(
   '/search',
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
-    const pageSize = query.pageSize || PAGE_SIZE;
+    const pageSize = query.pageSize || PAGE_SIZ;
     const page = query.page || 1;
     const category = query.category || '';
     const price = query.price || '';

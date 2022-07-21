@@ -31,11 +31,11 @@ export default function PaymentScreen() {
   return (
     <div>
       <CheckoutSteps step1 step2 step3></CheckoutSteps>
-      <div className="container small-container">
+      <div className="container small-container justify-content-center">
         <Helmet>
           <title>Payment Method</title>
         </Helmet>
-        <h1 className="my-3">Payment Method</h1>
+        <h3 className="my-3">Payment Method</h3>
         <Form onSubmit={submitHandler}>
           <div className="mb-3">
             <Form.Check
@@ -50,10 +50,10 @@ export default function PaymentScreen() {
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="Stripe"
-              label="Stripe"
-              value="Stripe"
-              checked={paymentMethodName === 'Stripe'}
+              id="Cod"
+              label="CashOnDelivery"
+              value="Cash On Delivery"
+              checked={paymentMethodName === 'CashOnDelivery'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>

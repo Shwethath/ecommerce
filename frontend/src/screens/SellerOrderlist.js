@@ -67,7 +67,7 @@ export default function SellerOrderlist() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(
-          `/api/orders/admin?sellerMode=${sellerMode}`,
+          `/api/orders/seller?sellerMode=${sellerMode}`,
           //?sellerMode=${sellerMode}
           {
             headers: { Authorization: `Bearer ${userInfo.token}` },

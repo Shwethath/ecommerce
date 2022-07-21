@@ -7,6 +7,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { Button } from 'react-bootstrap';
 //import { getError } from '../utils';
+//import { getError } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -15,8 +16,7 @@ const reducer = (state, action) => {
     case 'FETCH_SUCCESS':
       return { ...state, orders: action.payload, loading: false };
     case 'FETCH_FAIL':
-      return { ...state, loading: false, error: action.payload };
-
+      return { ...state, loading: false };
     default:
       return state;
   }
@@ -44,7 +44,6 @@ export default function OrderHistoryScreen() {
       } catch (err) {
         dispatch({
           type: 'FETCH_FAIL',
-          payload: (err.message = "You don't have any order"),
         });
       }
     };
@@ -91,7 +90,7 @@ export default function OrderHistoryScreen() {
                     type="button"
                     variant="primary"
                     onClick={() => {
-                      navigate(`/orders/details/${order._id}`);
+                      navigate(`/order/details/${order._id}`);
                     }}
                   >
                     Details

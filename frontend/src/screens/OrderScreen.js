@@ -47,7 +47,7 @@ function reducer(state, action) {
   }
 }
 export default function OrderScreen() {
-  const { state } = useContext(Store);
+  const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
   const params = useParams();
@@ -152,8 +152,10 @@ export default function OrderScreen() {
             headers: { authorization: `Bearer ${userInfo.token}` },
           }
         );
+        ctxDispatch({ type: 'CART_CLEAR' });
         dispatch({ type: 'PAY_SUCCESS', payload: data });
         toast.success('Order is paid');
+        localStorage.removeItem('cartItems');
       } catch (err) {
         dispatch({ type: 'PAY_FAIL', payload: getError(err) });
         toast.error(getError(err));
@@ -237,25 +239,30 @@ export default function OrderScreen() {
             </Card.Body>
           </Card>
 
-          <Card className="mb-3">
+          <Card className="mb-3 ">
             <Card.Body>
               <Card.Title>Items</Card.Title>
               <ListGroup variant="flush">
                 {order.orderItems.map((item) => (
                   <ListGroup.Item key={item._id}>
-                    <Row className="align-items-center">
-                      <Col md={6}>
+                    <Row className="align-items-center ">
+                      <Col md={3} sm={4} xs={4} lg={4}>
                         <img
                           src={item.image}
+                          width={100}
+                          height={50}
                           alt={item.name}
-                          className="img-fluid rounded img-thumbnail"
+                          className="img-fluid rounded item-img img-thumbnail "
                         ></img>{' '}
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
-                      <Col md={3}>
+                      <Col md={4} sm={4} xs={4}>
+                        <span>Quantity</span>&nbsp;
                         <span>{item.quantity}</span>
                       </Col>
-                      <Col md={3}>₹{item.price}</Col>
+                      <Col md={3} sm={4} xs={4}>
+                        Price ₹{item.price}
+                      </Col>
                     </Row>
                   </ListGroup.Item>
                 ))}

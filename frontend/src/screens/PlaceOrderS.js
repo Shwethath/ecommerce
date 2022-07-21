@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import CheckoutSteps from '../components/CheckoutSteps';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import { getError } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -74,11 +75,10 @@ export default function PlaceOrderS() {
       );
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE_SUCCESS' });
-      localStorage.removeItem('cartItems');
       navigate(`/order/${data.order._id}`);
     } catch (err) {
       dispatch({ type: 'CREATE_FAIL' });
-      toast.error(err.message);
+      toast.error(getError(err));
     }
   };
 
@@ -94,7 +94,7 @@ export default function PlaceOrderS() {
       <Helmet>
         <title>Preview Order</title>
       </Helmet>
-      <h1 className="my-3">Preview Order</h1>
+      <h2 className="my-3">Preview Order</h2>
       <Row>
         <Col md={8}>
           <Card className="mb-3">
@@ -127,18 +127,21 @@ export default function PlaceOrderS() {
                 {cart.cartItems.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
-                      <Col md={6}>
+                      <Col md={3} sm="3">
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="img-fluid rounded img-thumbnail"
-                        ></img>{' '}
+                          className="img-fluid rounded img-thumbnail "
+                        ></img>
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
-                      <Col md={3}>
+                      <Col md={3} sm="4">
+                        <span>Quantity</span>&nbsp;
                         <span>{item.quantity}</span>
                       </Col>
-                      <Col md={3}>₹{item.price}</Col>
+                      <Col md={3} sm="4">
+                        Price ₹{item.price}
+                      </Col>
                     </Row>
                   </ListGroup.Item>
                 ))}

@@ -144,13 +144,21 @@ export default function SearchScreen() {
         <title>Search Products</title>
       </Helmet>
       <Row>
-        <Col md={2} className="shadow p-3 mb-5 bg-white rounded ">
+        <Col
+          md={3}
+          lg={2}
+          sm={4}
+          xs={6}
+          className="shadow p-3 mb-5 bg-white rounded text-decoration-none "
+        >
           <h5>Categories</h5>
           <div>
             <ul>
               <div className="list-unstyled  fs-8 ">
                 <Link
-                  className={'all' === category ? 'text-bold' : ''}
+                  className={
+                    'all' === category ? 'text-bold ' : 'text-decoration-none'
+                  }
                   to={getFilterUrl({ category: 'all' })}
                 >
                   Any
@@ -160,7 +168,11 @@ export default function SearchScreen() {
               {categories.map((c) => (
                 <div className="list-unstyled  fs-8 " key={c}>
                   <Link
-                    className={c === category ? 'text-bold' : ''}
+                    className={
+                      c === category
+                        ? 'text-bold text-decoration-none'
+                        : 'text-decoration-none'
+                    }
                     to={getFilterUrl({ category: c })}
                   >
                     {c}
@@ -172,9 +184,11 @@ export default function SearchScreen() {
           <div>
             <h5>Price</h5>
             <ul>
-              <li className="list-unstyled fs-8 text-decoration:none">
+              <li className="list-unstyled fs-8 text-decoration-none">
                 <Link
-                  className={'all' === price ? 'text-bold' : ''}
+                  className={
+                    'all' === price ? 'text-bold' : 'text-decoration-none'
+                  }
                   to={getFilterUrl({ price: 'all' })}
                 >
                   Any
@@ -187,7 +201,9 @@ export default function SearchScreen() {
                 >
                   <Link
                     to={getFilterUrl({ price: p.value })}
-                    className={p.value === price ? 'text-bold' : ''}
+                    className={
+                      p.value === price ? 'text-bold' : 'text-decoration-none'
+                    }
                   >
                     {p.name}
                   </Link>
@@ -197,7 +213,7 @@ export default function SearchScreen() {
           </div>
           <div>
             <h5>Avg. Customer Review</h5>
-            <div className="text-decoration:none">
+            <div>
               {ratings.map((r) => (
                 <li
                   className="list-unstyled  fs-8 text-decoration-none "
@@ -205,7 +221,11 @@ export default function SearchScreen() {
                 >
                   <Link
                     to={getFilterUrl({ rating: r.rating })}
-                    className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}
+                    className={
+                      `${r.rating}` === `${rating}`
+                        ? 'text-bold'
+                        : 'text-decoration-none'
+                    }
                   >
                     <Rating caption={' & up'} rating={r.rating}></Rating>
                   </Link>
@@ -214,7 +234,9 @@ export default function SearchScreen() {
               <li className="list-unstyled  fs-8 text-decoration-none ">
                 <Link
                   to={getFilterUrl({ rating: 'all' })}
-                  className={rating === 'all' ? 'text-bold' : ''}
+                  className={
+                    rating === 'all' ? 'text-bold' : 'text-decoration-none'
+                  }
                 >
                   <Rating caption={' & up'} rating={0}></Rating>
                 </Link>
@@ -223,7 +245,7 @@ export default function SearchScreen() {
           </div>
         </Col>
 
-        <Col md={9} ms={6}>
+        <Col md={9} sm={8} xs={8} lg={10}>
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (
@@ -273,7 +295,7 @@ export default function SearchScreen() {
 
               <Row>
                 {products.map((product) => (
-                  <Col sm={6} lg={4} className="mb-3" key={product._id}>
+                  <Col sm={8} lg={4} md={6} className="mb-2" key={product._id}>
                     <Product product={product}></Product>
                   </Col>
                 ))}

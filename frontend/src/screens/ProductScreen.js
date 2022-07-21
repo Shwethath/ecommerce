@@ -146,16 +146,6 @@ function ProductScreen() {
                   <h4>{product.name}</h4>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  {/* Seller{' '}
-                  <h5>
-                    <Link to={`/seller/${product.seller._id}`}>
-                      {product.seller.seller.name}
-                    </Link>
-                  </h5>
-                  <Rating
-                    rating={product.seller.seller.rating}
-                    numReviews={product.seller.seller.numReviews}
-                  ></Rating> */}
                   <Rating
                     rating={product.rating}
                     numReviews={product.numReviews}

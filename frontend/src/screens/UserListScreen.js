@@ -106,7 +106,7 @@ export default function UserListScreen() {
           <table className="table table-responsive{-sm|-md|-lg|-xl} mt-4  shadow p-3 mb-5 bg-white rounded mt-n1-2">
             <thead className="table-active">
               <tr>
-                <th>ID</th>
+                <th>USER ID</th>
                 <th>NAME</th>
                 <th>Email</th>
                 <th>IS SELLER</th>

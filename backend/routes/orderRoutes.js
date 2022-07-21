@@ -7,6 +7,7 @@ import {
   isAdmin,
   isAuth,
   isSellerOrAdmin,
+  isSeller,
   mailgun,
   payOrderEmailTemplate,
 } from '../utils.js';
@@ -21,13 +22,37 @@ orderRouter.get(
     res.send(orders);
   })
 );
-
+const PAGE_SIZE = 4;
 orderRouter.get(
   '/admin',
   isAuth,
   isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const sellerFilter = req.query.sellerMode ? { seller: req.user._id } : {};
+    const { query } = req;
+    const page = query.page || 1;
+    const pageSize = query.pageSize || PAGE_SIZE;
+    const orders = await Order.find({ ...sellerFilter })
+      .populate('user', 'name')
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+    const countOrders = await Order.countDocuments({});
+    res.send({
+      orders,
+      countOrders,
+      page,
+      pages: Math.ceil(countOrders / pageSize),
+    });
+  })
+);
+
+orderRouter.get(
+  '/seller',
+  isAuth,
+  isSeller,
+  expressAsyncHandler(async (req, res) => {
+    const sellerFilter = req.query.sellerMode ? { seller: req.user._id } : {};
+
     const orders = await Order.find({ ...sellerFilter }).populate(
       'user',
       'name'
@@ -118,7 +143,6 @@ orderRouter.get(
 orderRouter.get(
   '/:id',
   isAuth,
-  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
