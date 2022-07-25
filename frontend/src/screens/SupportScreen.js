@@ -14,7 +14,7 @@ let allMessages = [];
 let allSelectedUser = {};
 const ENDPOINT =
   window.location.host.indexOf('localhost') >= 0
-    ? 'http://localhost:5000'
+    ? 'http://127.0.0.1:5000'
     : window.location.host;
 
 export default function SupportScreen() {
@@ -43,7 +43,8 @@ export default function SupportScreen() {
       sk.emit('onLogin', {
         _id: userInfo._id,
         name: userInfo.name,
-        isAdmin: userInfo.isAdmin,
+
+        isSeller: userInfo.isSeller,
       });
       sk.on('message', (data) => {
         if (allSelectedUser._id === data._id) {
@@ -110,7 +111,8 @@ export default function SupportScreen() {
         socket.emit('onMessage', {
           body: messageBody,
           name: userInfo.name,
-          isAdmin: userInfo.isAdmin,
+
+          isSeller: userInfo.isSeller,
           _id: selectedUser._id,
         });
       }, 1000);
@@ -122,11 +124,11 @@ export default function SupportScreen() {
       <Helmet>
         <title>Support</title>
       </Helmet>
-      <Col md={3} className="support-users">
+      <Col md={3} lg={3} xs={4} className="support-users">
         {users.filter((x) => x._id !== userInfo._id).length === 0 && (
           <MessageBox>No Online User Found</MessageBox>
         )}
-        <ul>
+        <ul className="list-none  flex-row-reverse ">
           {users
             .filter((x) => x._id !== userInfo._id)
             .map((user) => (
@@ -135,22 +137,26 @@ export default function SupportScreen() {
                 className={user._id === selectedUser._id ? '  selected' : '  '}
               >
                 <Button
-                  varaint="light"
                   type="button"
+                  variant="light"
                   onClick={() => selectUser(user)}
                 >
                   {user.name}
                 </Button>
                 <span
                   className={
-                    user.unread ? 'unread' : user.online ? 'online' : 'offline'
+                    user.unread
+                      ? 'unread justify-content-end'
+                      : user.online
+                      ? 'online justify-content-end'
+                      : 'offline'
                   }
                 />
               </li>
             ))}
         </ul>
       </Col>
-      <Col md={9} className="support-messages">
+      <Col md={8} lg={8} xs={8} className="support-messages">
         {!selectedUser._id ? (
           <MessageBox>Select a user to start chat</MessageBox>
         ) : (
@@ -158,6 +164,7 @@ export default function SupportScreen() {
             <Row>
               <strong>Chat with {selectedUser.name} </strong>
             </Row>
+            <br />
             <ul ref={uiMessagesRef}>
               {messages.length === 0 && <li>No message.</li>}
               {messages.map((msg, index) => (

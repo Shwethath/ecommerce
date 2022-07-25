@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import mg from 'mailgun-js';
+import nodemailer from 'nodemailer';
 
 export function generateToken(user) {
   return jwt.sign(
@@ -53,6 +54,50 @@ export const isSellerOrAdmin = (req, res, next) => {
     next();
   } else {
     res.status(401).send({ message: 'Invalid Admin/Seller Token' });
+  }
+};
+
+//otp generate
+
+export const generateOTP = () => {
+  let otp = '';
+  for (let i = 0; i <= 3; i++) {
+    const val = Math.round(Math.random() * 9);
+    otp = otp + val;
+  }
+  return otp;
+};
+
+export const verifyEmail = (user) => {
+  return `<h1>${user.name}Thanks for Registering on our site</h1>
+  <h4>Please verify your mail to login</h4>
+  <a href="http://${req.headers.host}/user/verify-email?token=${user.emailToken}">verify your email</a>`;
+};
+
+export const sendEmail = async (email, subject, text) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.HOST,
+      service: process.env.SERVICE,
+      port: Number(process.env.EMAIL_PORT),
+      secure: Boolean(process.env.SECURE),
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.USER,
+      to: email,
+      subject: subject,
+      text: text,
+    });
+    console.log('email sent successfully');
+  } catch (error) {
+    console.log('email not sent!');
+    console.log(error);
+    return error;
   }
 };
 

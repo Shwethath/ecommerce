@@ -15,6 +15,7 @@ import Form from 'react-bootstrap/Form';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import ChatBox from '../components/ChatBox';
 
 //productdetails reducer in old amazona
 const reducer = (state, action) => {
@@ -126,14 +127,14 @@ function ProductScreen() {
   ) : (
     <div>
       <Row>
-        <Col md={4} m={0}>
+        <Col md={4} m={0} ms={4}>
           <img
             className="img-large shadow-sm p-3 mb-5 bg-white rounded"
             src={selectedImage || product.image}
             alt={product.name}
           ></img>
         </Col>
-        <Col md={8} m={0}>
+        <Col md={8} m={0} ms={6}>
           <Row>
             <Col
               md={6}
@@ -180,7 +181,7 @@ function ProductScreen() {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={5} m={0}>
+            <Col md={5} m={0} xs={8}>
               <Card className="shadow-sm p-3 ms-2 mb-5 bg-white rounded">
                 {/* <Card.Body> */}
                 <ListGroup variant="flush">
@@ -276,7 +277,7 @@ function ProductScreen() {
               ))}
             </ListGroup>
           </Col>
-          <Col md={6}>
+          <Col md={6} xs={4}>
             <div className="my-3 ">
               {userInfo ? (
                 <form onSubmit={submitHandler}>
@@ -327,7 +328,11 @@ function ProductScreen() {
           </Col>
         </div>
       </Row>
-      <Row></Row>
+      <div className="justify-content-right" md={2} lg={4} sm={6}>
+        {userInfo && !userInfo.isAdmin && !userInfo.isSeller && (
+          <ChatBox userInfo={userInfo} />
+        )}
+      </div>
     </div>
   );
 }

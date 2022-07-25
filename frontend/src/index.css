@@ -104,6 +104,9 @@ button .outline-primary {
 .img-thumbnail {
   min-height: 80px;
 }
+.container-up {
+  margin-top: 80px;
+}
 .small-container {
   max-width: 600px;
 }
@@ -267,7 +270,7 @@ button .thumbnail {
 
 /* Chatbox */
 .chatbox {
-  color: #000000;
+  color: blue;
   position: fixed;
   right: 1rem;
   bottom: 1rem;
@@ -284,15 +287,22 @@ button .thumbnail {
 }
 
 .support-users {
-  background: #f0f0f0;
-  height: 100%;
+  background: #c6d2fa;
+  max-height: 100%;
 }
-.support-users li {
-  background-color: #f8f8f8;
+.list-none {
+  list-style-type: none;
+}
+
+.support-users ul {
+  background-color: #f0f0f0;
+  border-bottom: 0.1rem #c0c0c0 solid;
+  max-width: 100%;
 }
 .support-users button {
   background-color: transparent;
   border: none;
+
   text-align: left;
 }
 .support-users li {
@@ -302,10 +312,13 @@ button .thumbnail {
 }
 
 .support-users li:hover {
+  background-color: #afadad;
+}
+.support-users ul.selected {
   background-color: #f0f0f0;
 }
 .support-users li.selected {
-  background-color: #c0c0c0;
+  background-color: #f0f0f0;
 }
 .support-messages {
   padding: 1rem;
@@ -323,11 +336,9 @@ button .thumbnail {
 }
 
 .support-users span {
-  width: 2rem;
-  height: 2rem;
   border-radius: 50%;
   position: absolute;
-  margin-left: -25px;
+
   margin-top: 10px;
 }
 .support-users .offline {
@@ -335,7 +346,12 @@ button .thumbnail {
 }
 .support-users .online {
   background-color: #20a020;
+  height: 15px;
+  width: 15px;
 }
 .support-users .unread {
   background-color: #f02020;
+  margin-left: 40px;
+  height: 15px;
+  width: 15px;
 }

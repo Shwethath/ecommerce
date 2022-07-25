@@ -42,6 +42,7 @@ import SellerScreen from './screens/SellerScreen';
 //import ChatBox from './components/ChatBox';
 import SellerProductlist from './screens/SellerProductlist';
 import SellerOrderlist from './screens/SellerOrderlist';
+import SupportScreen from './screens/SupportScreen';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -146,6 +147,9 @@ function App() {
                       </Link>
                       <Link to="/orders/seller" className="dropdown-item">
                         Orders
+                      </Link>
+                      <Link to="/support" className="dropdown-item">
+                        Support
                       </Link>
                     </NavDropdown>
                   )}
@@ -302,7 +306,15 @@ function App() {
                     <OrderListScreen />
                   </AdminRoute>
                 }
-              ></Route>{' '}
+              ></Route>
+              <Route
+                path="/support"
+                element={
+                  <ProtectedRoute>
+                    <SupportScreen />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/order/details/:id" element={<OrderScreen />} />
               {/* User Routes */}
               <Route
@@ -320,7 +332,7 @@ function App() {
           {/* {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />} */}
 
           <div
-            className="text-center p-4text-black"
+            className="text-center p-4 text-black"
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
           >
             Created By <Link to="/"> Shwetha T H </Link> | © 2022 Copyright:

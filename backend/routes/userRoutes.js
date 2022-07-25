@@ -8,9 +8,29 @@ import {
   isSeller,
   generateToken,
   isSellerOrAdmin,
+  sendEmail,
+  generateOTP,
 } from '../utils.js';
-//import mongoose from 'mongoose';
+//import userVerify from '../models/userVerifyModel.js';
+import nodemailer from 'nodemailer';
+
 const userRouter = express.Router();
+
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: 'shopeeday@gmail.com',
+//     pass: 'shopeeday',
+//   },
+// });
+// transporter.verify((error, success) => {
+//   if (error) {
+//     console.log(error);
+//   } else {
+//     console.log('Ready for messages');
+//     console.log(success);
+//   }
+// });
 
 userRouter.get(
   '/top-sellers',
@@ -81,7 +101,7 @@ userRouter.put(
         name: updatedUser.name,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
-        isSeller: user.isSeller,
+        isSeller: updatedUser.isSeller,
         token: generateToken(updatedUser),
       });
     }
@@ -161,24 +181,40 @@ userRouter.delete(
 
 userRouter.post(
   '/login',
+
   expressAsyncHandler(async (req, res) => {
-    const user = await User.findOne({ email: req.body.email });
-    if (user) {
-      if (bcrypt.compareSync(req.body.password, user.password)) {
-        res.send({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          isAdmin: user.isAdmin,
-          isSeller: user.isSeller,
-          token: generateToken(user),
-        });
-        return;
+    try {
+      const user = await User.findOne({ email: req.body.email });
+      if (user) {
+        if (bcrypt.compareSync(req.body.password, user.password)) {
+          res.send({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            isSeller: user.isSeller,
+            token: generateToken(user),
+          });
+
+          return;
+        } else {
+          res.status(401).send({ message: 'Invalid email or password' });
+        }
       }
+      res.status(401).send({ message: 'User not registered' });
+    } catch (err) {
+      console.log(err);
     }
-    res.status(401).send({ message: 'Invalid email or password' });
   })
 );
+//nodemailer setup
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'shopeeday@gmail.com',
+    pass: 'password',
+  },
+});
 
 //signup api
 userRouter.post(
@@ -188,198 +224,69 @@ userRouter.post(
       name: req.body.name,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password),
+      emailToken: crypto.randomBytes(64).toString('hex'),
+      isverified: false,
     });
-    const user = await newUser.save(); // save to database and return to frontend
+    // const OTP = generateOTP()
+    const user = await newUser.save();
+    try {
+      const mailOptions = {
+        from: '"shopeeday"<no-reply@gmail.com>',
+        to: user.email,
+        subject: `verify your email ${user.email}`,
+        html: verifyEmail(user),
+      };
+      transporter.sendMail(mailOptions, (error, success) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Verification link sent to your mail, please verify');
+          console.log(success);
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
     res.send({
       _id: user._id,
       name: user.name,
       email: user.email,
+      verified: user.verified,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
       token: generateToken(user),
     });
   })
 );
-
 export default userRouter;
 
-// userRouter.get(
-//   '/top-sellers',
-//   expressAsyncHandler(async (req, res) => {
-//     const topSellers = await User.find({ isSeller: true })
-//       .sort({ 'seller.rating': -1 })
-//       .limit(3);
-//     res.send(topSellers);
-//   })
-// );
-
-// userRouter.get(
-//   '/seed',
-//   expressAsyncHandler(async (req, res) => {
-//     // await User.remove({});
-//     const createdUsers = await User.insertMany(data.users);
-//     res.send({ createdUsers });
-//   })
-// );
-
-// //login api
-
-// userRouter.post(
-//   '/login',
-//   expressAsyncHandler(async (req, res) => {
-//     const user = await User.findOne({ email: req.body.email });
-//     if (user) {
-//       if (bcrypt.compareSync(req.body.password, user.password)) {
-//         res.send({
-//           _id: user._id,
-//           name: user.name,
-//           email: user.email,
-//           isAdmin: user.isAdmin,
-//           isSeller: user.isSeller,
-//           token: generateToken(user),
-//         });
-//         return;
-//       }
-//     }
-//     res.status(401).send({ message: 'Invalid email or password' });
-//   })
-// );
-
-// //signup api
-// userRouter.post(
-//   '/register',
-//   expressAsyncHandler(async (req, res) => {
-//     const newUser = new User({
-//       name: req.body.name,
-//       email: req.body.email,
-//       password: bcrypt.hashSync(req.body.password),
+// userRouter.get('/:id/verify/:token/', async (req, res) => {
+//   try {
+//     const user = await User.findOne({ _id: req.params.id });
+//     if (!user) return res.status(400).send({ message: 'Invalid link' });
+//     const token = await Token.findOne({
+//       userId: user._id,
+//       token: req.params.token,
 //     });
-//     const createdUser = await newUser.save(); // save to database and return to frontend
-//     res.send({
-//       _id: createdUser._id,
-//       name: createdUser.name,
-//       email: createdUser.email,
-//       isAdmin: createdUser.isAdmin,
-//       isSeller: createdUser.isSeller,
-//       token: generateToken(createdUser),
-//     });
-//   })
-// );
+//     if (!token) return res.status(400).send({ message: 'Invalid link' });
+//     await User.updateOne({ _id: user._id, verified: true });
+//     await token.remove();
 
-// //seller id api
-
-// userRouter.get(
-//   '/sellers/:id',
-//   expressAsyncHandler(async (req, res) => {
-//     const user = await User.findById(req.params.id);
-//     if (user && user.isSeller) {
-//       res.send({
-//         _id: user._id,
-//         name: user.name,
-//         email: user.email,
-//         seller: user.seller,
-//       });
-//     } else {
-//       res.status(404).send({ message: 'Seller Not Found' });
-//     }
-//   })
-// );
-
-// //user id api
-// userRouter.get(
-//   '/:id',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const user = await User.findById(req.params.id);
-//     if (user) {
-//       res.send(user);
-//     } else {
-//       res.status(404).send({ message: 'User Not Found' });
-//     }
-//   })
-// );
-
-// //update profile
-// userRouter.put(
-//   '/profile',
-//   isAuth,
-//   expressAsyncHandler(async (req, res) => {
-//     const user = await User.findById(req.user._id);
-// if (user) {
-//   user.name = req.body.name || user.name;
-//   user.email = req.body.email || user.email;
-//   if (user.isSeller) {
-//     user.seller.name = req.body.sellerName || user.seller.name;
-//     user.seller.logo = req.body.sellerLogo || user.seller.logo;
-//     user.seller.description =
-//       req.body.sellerDescription || user.seller.description;
+//     res.status(200).send({ message: 'Email verified successfully' });
+//   } catch (error) {
+//     res.status(500).send({ message: 'Internal Server Error' });
 //   }
-//       if (req.body.password) {
-//         user.password = bcrypt.hashSync(req.body.password, 8);
-//       }
-//       const updatedUser = await user.save();
-//       res.send({
-//         _id: updatedUser._id,
-//         name: updatedUser.name,
-//         email: updatedUser.email,
-//         isAdmin: updatedUser.isAdmin,
-//         isSeller: updatedUser.isSeller,
-//         token: generateToken(updatedUser),
-//       });
-//     } else {
-//       res.status(404).send({ message: 'User not found' });
-//     }
-//   })
-// );
+// });
 
-// userRouter.get(
-//   '/',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const users = await User.find({});
-//     res.send(users);
-//   })
-// );
-
-// //user delete
-// userRouter.delete(
-//   '/:id',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const user = await User.findById(req.params.id);
-//     if (user) {
-//       if (user.email === 'admin@example.com') {
-//         res.status(400).send({ message: 'Can Not Delete Admin User' });
-//         return;
-//       }
-//       const deleteUser = await user.remove();
-//       res.send({ message: 'User Deleted', user: deleteUser });
-//     } else {
-//       res.status(404).send({ message: 'User Not Found' });
-//     }
-//   })
-// );
-
-// //user update api
-// userRouter.put(
-//   '/:id',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const user = await User.findById(req.params.id);
-//     if (user) {
-//       user.name = req.body.name || user.name;
-//       user.email = req.body.email || user.email;
-//       user.isSeller = Boolean(req.body.isSeller);
-//       user.isAdmin = Boolean(req.body.isAdmin);
-//       const updatedUser = await user.save();
-//       res.send({ message: 'User Updated', user: updatedUser });
-//     } else {
-//       res.status(404).send({ message: 'User Not Found' });
-//     }
-//   })
-// );
-// export default userRouter;
+// save to database and return to frontend
+// try {
+//   transporter.sendMail({
+//     to: `${user.email}`,
+//     from: 'no-reply@shopeeday.com',
+//     subject: 'Login success',
+//     html: '<h3>Welcome to shopee Day website</h3>',
+//   });
+//   console.log('Message sent successfully ');
+// } catch (err) {
+//   console.log(err);
+// }

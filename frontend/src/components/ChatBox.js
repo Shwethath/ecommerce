@@ -9,7 +9,7 @@ import FormControl from 'react-bootstrap/FormControl';
 
 const ENDPOINT =
   window.location.host.indexOf('localhost') >= 0
-    ? 'http://localhost:5000'
+    ? 'http://127.0.0.1:5000'
     : window.location.host;
 
 export default function ChatBox(props) {
@@ -19,7 +19,10 @@ export default function ChatBox(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [messageBody, setMessageBody] = useState('');
   const [messages, setMessages] = useState([
-    { name: 'Admin', body: 'Hello there, Please ask your question.' },
+    {
+      name: 'Seller',
+      body: 'Hello there, Please ask your question.',
+    },
   ]);
 
   useEffect(() => {
@@ -34,7 +37,7 @@ export default function ChatBox(props) {
       socket.emit('onLogin', {
         _id: userInfo._id,
         name: userInfo.name,
-        isAdmin: userInfo.isAdmin,
+        isSeller: userInfo.isSeller,
       });
       socket.on('message', (data) => {
         setMessages([...messages, { body: data.body, name: data.name }]);
@@ -59,7 +62,7 @@ export default function ChatBox(props) {
         socket.emit('onMessage', {
           body: messageBody,
           name: userInfo.name,
-          isAdmin: userInfo.isAdmin,
+          isSeller: userInfo.isSeller,
           _id: userInfo._id,
         });
       }, 1000);
@@ -73,6 +76,7 @@ export default function ChatBox(props) {
       {!isOpen ? (
         <Button variant="light" type="button" onClick={supportHandler}>
           <i className="fas fa-life-ring" />
+          Chat
         </Button>
       ) : (
         <Card>
@@ -83,7 +87,7 @@ export default function ChatBox(props) {
               </Col>
               <Col className="text-end">
                 <Button variant="light" type="button" onClick={closeHandler}>
-                  <i class="fas fa-times-circle"></i>
+                  <i className="fas fa-times-circle"></i>
                 </Button>
               </Col>
             </Row>

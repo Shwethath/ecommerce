@@ -49,7 +49,7 @@ export default function SignupScreen() {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
+    <Container className="small-container container-up">
       <Helmet>
         <title>Register</title>
       </Helmet>
@@ -59,7 +59,7 @@ export default function SignupScreen() {
           <Form onSubmit={submitHandler}>
             <Form.Group className="mb-2" controlId="name">
               <i className="zmdi zmdi-account material-icons-name"></i>
-              <Form.Label>Name</Form.Label>
+              <Form.Label> Full Name</Form.Label>
               <Form.Control
                 placeholder="Your Name"
                 onChange={(e) => setName(e.target.value)}
