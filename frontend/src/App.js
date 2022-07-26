@@ -320,8 +320,8 @@ function App() {
           </Container>
         </main>
         <footer className="footer">
-          {/* {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />} */}
-          <Footer />
+          {<Link to="/"></Link> ? <Footer /> : ''}
+
           <div
             className="text-center p-4 text-black"
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
