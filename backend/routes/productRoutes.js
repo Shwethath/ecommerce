@@ -40,6 +40,7 @@ productRouter.post(
       seller: req.user._id,
       slug: 'sample-name-' + Date.now(),
       image: '/images/productspic/cloth1.jpg',
+      size: '',
       price: 0,
       category: 'cloths',
       brand: 'sample brand',
@@ -49,7 +50,7 @@ productRouter.post(
       description: 'Sample description',
     });
     const product = await newProduct.save();
-    res.send({ message: 'Product Created', product });
+    res.send({ message: 'Sample Product Created edit now', product });
   })
 );
 //sellerpage
@@ -117,6 +118,7 @@ productRouter.put(
       product.slug = req.body.slug;
       // product.seller = req.body.seller;
       product.price = req.body.price;
+      product.size = req.body.size;
       product.image = req.body.image;
       product.images = req.body.images;
       product.category = req.body.category;

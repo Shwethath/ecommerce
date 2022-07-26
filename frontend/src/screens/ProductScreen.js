@@ -127,7 +127,7 @@ function ProductScreen() {
   ) : (
     <div>
       <Row>
-        <Col md={4} m={0} ms={4}>
+        <Col md={4} m={0} ms={2}>
           <img
             className="img-large shadow-sm p-3 mb-5 bg-white rounded"
             src={selectedImage || product.image}
@@ -158,13 +158,19 @@ function ProductScreen() {
                   </Col>
                   <Col md={3} m={0} className="d-inline-block">
                     <Form.Group controlId="size">
+                      <Form.Label>Size</Form.Label>
+                      {/* <Form.Select>
+                        {product.size.map((s) => (
+                          <option key={s}>{s.size}</option>
+                        ))}
+                      </Form.Select> */}
+
                       <Form.Select
                         aria-label="Size"
                         value={size}
                         className="w-30 p-2"
                         onChange={(e) => setSize(e.target.value)}
                       >
-                        <option value="">Size</option>
                         <option value="s">S</option>
                         <option value="m">M</option>
                         <option value="l">L</option>
@@ -259,7 +265,7 @@ function ProductScreen() {
       </Row>
       <Row>
         <div className="my-3 col-md-12">
-          <Col md={4}>
+          <Col md={4} xs={4}>
             <h3 ref={reviewsRef}>Reviews</h3>
             <div className="mb-3">
               {product.reviews.length === 0 && (

@@ -165,7 +165,7 @@ export default function SupportScreen() {
               <strong>Chat with {selectedUser.name} </strong>
             </Row>
             <br />
-            <ul ref={uiMessagesRef}>
+            <ul ref={uiMessagesRef} className="list-none">
               {messages.length === 0 && <li>No message.</li>}
               {messages.map((msg, index) => (
                 <li key={index}>

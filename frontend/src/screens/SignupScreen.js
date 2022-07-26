@@ -53,9 +53,9 @@ export default function SignupScreen() {
       <Helmet>
         <title>Register</title>
       </Helmet>
-      <Row>
-        <Col className="col-md-6 shadow p-3 mb-5 bg-white rounded mt-n1-2">
-          <h2 className="my-3 text-center">Register</h2>
+      <Row md={12} className=" shadow p-3 mb-5 bg-white rounded mt-n1-2">
+        <h2 className="my-3 text-center">Register</h2>
+        <Col md={6} xs={12}>
           <Form onSubmit={submitHandler}>
             <Form.Group className="mb-2" controlId="name">
               <i className="zmdi zmdi-account material-icons-name"></i>
@@ -106,12 +106,12 @@ export default function SignupScreen() {
             </div>
           </Form>
         </Col>
-        <Col className="login-image  col-md-6 shadow p-3 mb-5 bg-white rounded ">
+        <Col md={6} xs={12} className="login-image    ">
           <Figure>
             <img
               src="../images/signup.jpg"
               alt="Register pic"
-              width={300}
+              width={250}
               height={400}
             />
           </Figure>

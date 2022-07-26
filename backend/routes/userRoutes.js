@@ -208,13 +208,13 @@ userRouter.post(
   })
 );
 //nodemailer setup
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'shopeeday@gmail.com',
-    pass: 'password',
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: 'shopeeday@gmail.com',
+//     pass: 'password',
+//   },
+// });
 
 //signup api
 userRouter.post(
@@ -224,34 +224,31 @@ userRouter.post(
       name: req.body.name,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password),
-      emailToken: crypto.randomBytes(64).toString('hex'),
-      isverified: false,
     });
     // const OTP = generateOTP()
     const user = await newUser.save();
-    try {
-      const mailOptions = {
-        from: '"shopeeday"<no-reply@gmail.com>',
-        to: user.email,
-        subject: `verify your email ${user.email}`,
-        html: verifyEmail(user),
-      };
-      transporter.sendMail(mailOptions, (error, success) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Verification link sent to your mail, please verify');
-          console.log(success);
-        }
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   const mailOptions = {
+    //     from: '"shopeeday"<no-reply@gmail.com>',
+    //     to: user.email,
+    //     subject: `verify your email ${user.email}`,
+    //     html: verifyEmail(user),
+    //   };
+    //   transporter.sendMail(mailOptions, (error, success) => {
+    //     if (error) {
+    //       console.log(error);
+    //     } else {
+    //       console.log('Verification link sent to your mail, please verify');
+    //       console.log(success);
+    //     }
+    //   });
+    // } catch (err) {
+    //   console.log(err);
+    // }
     res.send({
       _id: user._id,
       name: user.name,
       email: user.email,
-      verified: user.verified,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
       token: generateToken(user),

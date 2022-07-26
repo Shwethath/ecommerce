@@ -6,6 +6,7 @@ import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
 import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
+//import Navbarf from './components/Navbarf';
 import { useContext } from 'react';
 import { Store } from './Store';
 import CartScreen from './screens/CartScreen';
@@ -21,7 +22,7 @@ import Button from 'react-bootstrap/Button';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardScreen from './screens/DashboardScreen';
 import AdminRoute from './components/AdminRoute';
-import SellerDashboard from './screens/SellerDashboard';
+//import SellerDashboard from './screens/SellerDashboard';
 //import NavbarToggle from 'react-bootstrap/NavbarToggle';
 //import NavbarCollapse from 'react-bootstrap/NavbarCollapse';
 import SearchScreen from './screens/SearchScreen';
@@ -103,18 +104,6 @@ function App() {
 
                 {/* Cart pages */}
                 <Nav className="justify-content-end">
-                  <Link to="/cart" className="nav-link">
-                    <i
-                      className="fa fa-shopping-cart white-color"
-                      width="20"
-                      height="20"
-                    ></i>
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg="danger">
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
-                    )}
-                  </Link>
                   {userInfo ? (
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                       <Link to="/profile" className="dropdown-item">
@@ -139,9 +128,6 @@ function App() {
                   )}
                   {userInfo && userInfo.isSeller && (
                     <NavDropdown title="Seller" id="seller-nav-dropdown">
-                      <Link to=" /seller/dashboard" className="dropdown-item">
-                        Dashboard
-                      </Link>
                       <Link to="/products/seller" className="dropdown-item">
                         Products
                       </Link>
@@ -153,7 +139,6 @@ function App() {
                       </Link>
                     </NavDropdown>
                   )}
-
                   {userInfo && userInfo.isAdmin && (
                     <NavDropdown title="Admin" id="admin-nav-dropdown">
                       <Link to="/admin/dashboard" className="dropdown-item">
@@ -170,6 +155,18 @@ function App() {
                       </Link>
                     </NavDropdown>
                   )}
+                  <Link to="/cart" className="nav-link">
+                    <i
+                      className="fa fa-shopping-cart white-color"
+                      width="20"
+                      height="20"
+                    ></i>
+                    {cart.cartItems.length > 0 && (
+                      <Badge pill bg="danger">
+                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      </Badge>
+                    )}
+                  </Link>
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -192,7 +189,7 @@ function App() {
                   to={`/search?category=${category}`}
                   onClick={() => setSidebarIsOpen(false)}
                 >
-                  <Nav.Link>{category}</Nav.Link>
+                  <NavLink>{category}</Nav.Link>
                 </Link>
               </Nav.Item>
             ))}
@@ -290,14 +287,7 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-              <Route
-                path="/seller/dashboard"
-                element={
-                  <AdminRoute>
-                    <SellerDashboard />
-                  </AdminRoute>
-                }
-              ></Route>
+
               {/* Order Routes */}
               <Route
                 path="/orders/admin"

@@ -58,6 +58,7 @@ export default function ProductEditScreen() {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
+  const [size, setSize] = useState('');
   const [image, setImage] = useState('');
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState('');
@@ -73,6 +74,7 @@ export default function ProductEditScreen() {
         setName(data.name);
         setSlug(data.slug);
         setPrice(data.price);
+        setSize(data.size);
         setImage(data.image);
         setImages(data.images);
         setCategory(data.category);
@@ -101,6 +103,7 @@ export default function ProductEditScreen() {
           name,
           slug,
           price,
+          size,
           image,
           images,
           category,
@@ -191,6 +194,23 @@ export default function ProductEditScreen() {
               onChange={(e) => setPrice(e.target.value)}
               required
             />
+          </Form.Group>
+          <Form.Group controlId="size" className="mb-3">
+            <Form.Label>Size</Form.Label>
+            <Form.Select
+              aria-label="Size"
+              value={size}
+              className="w-30 p-2"
+              onChange={(e) => setSize(e.target.value)}
+            >
+              <option value="">Size</option>
+              <option value="All">All</option>
+              <option value="s">S</option>
+              <option value="m">M</option>
+              <option value="l">L</option>
+              <option value="xl">XL</option>
+              <option value="xxl">XXL</option>
+            </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="image">
             <Form.Label>Image File</Form.Label>

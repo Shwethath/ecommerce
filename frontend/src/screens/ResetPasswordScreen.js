@@ -45,16 +45,10 @@ export default function SigninScreen() {
   return (
     <Container className="small-container  container-up">
       <Helmet>
-        <title>Login </title>
+        <title>Reset Password </title>
       </Helmet>
-
       <Row className="justify-content-center">
-        <h2 className="my-3 text-center">Login </h2>
-        <Col
-          md={6}
-          xs={12}
-          className="login-image   shadow p-3 mb-5 bg-white rounded mt-n1-2"
-        >
+        <Col className="login-image  col-md-6 shadow p-3 mb-5 bg-white rounded mt-n1-2">
           <Figure>
             <img
               src="../images/login.png"
@@ -64,34 +58,31 @@ export default function SigninScreen() {
             />
           </Figure>
         </Col>
-        <Col
-          md={6}
-          xs={12}
-          className="  shadow p-3 mb-5 bg-white rounded mt-n1-2"
-        >
+        <Col className="  col-md-6  shadow p-3 mb-5 bg-white rounded mt-n1-2">
           <Form onSubmit={submitHandler}>
-            <Form.Group className="mb-3" controlId="email">
+            <h2 className="my-3 text-center">Login </h2>
+            <Form.Group className="mb-3" controlId="password">
               <i className="zmdi zmdi-email material-icons-name"></i>
-              <Form.Label>Email</Form.Label>
+              <Form.Label>New password</Form.Label>
               <Form.Control
-                type="email"
-                placeholder="John@example.com"
+                type="password"
+                placeholder="New password"
                 required
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="password">
+            <Form.Group className="mb-3" controlId="Cpassword">
               <i className="zmdi zmdi-lock material-icons-name"></i>
-              <Form.Label>Password</Form.Label>{' '}
+              <Form.Label>Confirm Password</Form.Label>{' '}
               <Form.Control
                 type="password"
-                placeholder="Enter the password"
+                placeholder="confirm password"
                 required
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
             <div className="mb-3">
-              <Button type="submit">Login</Button>
+              <Button type="submit">Reset Password</Button>
             </div>
             <div className="mb-3">
               New customer?{' '}

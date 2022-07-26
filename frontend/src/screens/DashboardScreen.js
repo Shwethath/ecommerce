@@ -60,7 +60,7 @@ export default function DashboardScreen() {
       ) : (
         <>
           <Row>
-            <Col md={4}>
+            <Col md={3}>
               <Card>
                 <Card.Body className="bg-info">
                   <Card.Text>
@@ -74,7 +74,8 @@ export default function DashboardScreen() {
                 </Card.Body>
               </Card>
             </Col>
-            <Col md={4}>
+
+            <Col md={3}>
               <Card>
                 <Card.Body className="bg-warning">
                   <Card.Text>

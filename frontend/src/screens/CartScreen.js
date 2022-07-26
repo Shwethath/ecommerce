@@ -63,7 +63,7 @@ export default function CartScreen() {
                       ></img>
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
-                    <Col md={4} sm={6} xs={4}>
+                    <Col md={4} sm={4} xs={4}>
                       <Button
                         onClick={() =>
                           updateCartHandler(item, item.quantity - 1)
@@ -84,6 +84,7 @@ export default function CartScreen() {
                       >
                         <i className="fas fa-plus-circle"></i>
                       </Button>
+                      {item.size}
                     </Col>
                     <Col md={2} sm={2} xs={2}>
                       ₹{item.price}
