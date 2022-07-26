@@ -44,6 +44,7 @@ import SellerScreen from './screens/SellerScreen';
 import SellerProductlist from './screens/SellerProductlist';
 import SellerOrderlist from './screens/SellerOrderlist';
 import SupportScreen from './screens/SupportScreen';
+import Footer from './components/Footer';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -320,13 +321,13 @@ function App() {
         </main>
         <footer className="footer">
           {/* {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />} */}
-
+          <Footer />
           <div
             className="text-center p-4 text-black"
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
           >
             Created By <Link to="/"> Shwetha T H </Link> | © 2022 Copyright:
-            <Link className="text-reset fw-bold" to="https://mdbootstrap.com/">
+            <Link className="text-reset fw-bold" to="/">
               All rights reserved.
             </Link>
           </div>
