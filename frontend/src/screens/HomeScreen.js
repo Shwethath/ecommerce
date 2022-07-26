@@ -11,7 +11,7 @@ import { getError } from '../utils';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Link } from 'react-router-dom';
-//import Footer from '../components/Footer';
+import Footer from '../components/Footer';
 //import CategoryHeader from './CategoryHeader';
 //usestate depends on previews state
 
@@ -114,6 +114,7 @@ function HomeScreen() {
           </Row>
         </>
       )}
+      <Footer />
     </div>
   );
 }

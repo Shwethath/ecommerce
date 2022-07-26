@@ -200,6 +200,7 @@ function App() {
           <Container className="mt-3">
             <Routes>
               <Route path="/" element={<HomeScreen />} />
+              <Route path="/" element={<Footer />} />
               <Route path="/product/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/login" element={<SigninScreen />} />
@@ -320,14 +321,12 @@ function App() {
           </Container>
         </main>
         <footer className="footer">
-          {<Link to="/"></Link> ? <Footer /> : ''}
-
           <div
             className="text-center p-4 text-black"
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
           >
             Created By <Link to="/"> Shwetha T H </Link> | © 2022 Copyright:
-            <Link className="text-reset fw-bold" to="/">
+            <Link className="text-reset fw-bold text-decoration-none" to="/">
               All rights reserved.
             </Link>
           </div>
