@@ -2,17 +2,11 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
-import {
-  isAuth,
-  isAdmin,
-  isSeller,
-  generateToken,
-  isSellerOrAdmin,
-  sendEmail,
-  generateOTP,
-} from '../utils.js';
-//import userVerify from '../models/userVerifyModel.js';
-import nodemailer from 'nodemailer';
+import Token from '../models/tokenModel.js';
+import { isAuth, generateToken, isSellerOrAdmin } from '../utils.js';
+//import crypto from 'crypto';
+
+//import nodemailer from 'nodemailer';
 
 const userRouter = express.Router();
 
@@ -227,36 +221,23 @@ userRouter.post(
     });
     // const OTP = generateOTP()
     const user = await newUser.save();
-    // try {
-    //   const mailOptions = {
-    //     from: '"shopeeday"<no-reply@gmail.com>',
-    //     to: user.email,
-    //     subject: `verify your email ${user.email}`,
-    //     html: verifyEmail(user),
-    //   };
-    //   transporter.sendMail(mailOptions, (error, success) => {
-    //     if (error) {
-    //       console.log(error);
-    //     } else {
-    //       console.log('Verification link sent to your mail, please verify');
-    //       console.log(success);
-    //     }
-    //   });
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    const token = await new Token({
+      userId: user._id,
+      token: crypto.randomBytes(32).toString('hex'),
+    }).save();
+    const url = `${process.env.BASE_URL}users/${user._id}/verify/${token}`;
+    await sendEmail(user.email, 'verify Email', url);
     res.send({
       _id: user._id,
       name: user.name,
       email: user.email,
+      // isVerified: user.isVerified,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
       token: generateToken(user),
     });
   })
 );
-export default userRouter;
-
 // userRouter.get('/:id/verify/:token/', async (req, res) => {
 //   try {
 //     const user = await User.findOne({ _id: req.params.id });
@@ -266,7 +247,7 @@ export default userRouter;
 //       token: req.params.token,
 //     });
 //     if (!token) return res.status(400).send({ message: 'Invalid link' });
-//     await User.updateOne({ _id: user._id, verified: true });
+//     await User.updateOne({ _id: user._id, isVerified: true });
 //     await token.remove();
 
 //     res.status(200).send({ message: 'Email verified successfully' });
@@ -274,6 +255,39 @@ export default userRouter;
 //     res.status(500).send({ message: 'Internal Server Error' });
 //   }
 // });
+// userRouter.get(
+//   '/forgot-password',
+//   expressAsyncHandler(async (req, res) => {})
+// );
+
+// userRouter.post(
+//   '/forgot-password',
+//   isAuth,
+//   expressAsyncHandler(async (req, res) => {
+//     const user = await User.findOne({ email: req.body.email });
+//     if (email !== user.email) {
+//       res.send('User not registered');
+//       return;
+//     } else {
+//       res.send({
+//         token: generateToken(user),
+//       });
+//     }
+//   })
+// );
+
+// userRouter.get(
+//   '/reset-password',
+//   isAuth,
+//   expressAsyncHandler(async (req, res) => {})
+// );
+
+// userRouter.post(
+//   '/reset-password',
+//   isAuth,
+//   expressAsyncHandler(async (req, res) => {})
+// );
+export default userRouter;
 
 // save to database and return to frontend
 // try {

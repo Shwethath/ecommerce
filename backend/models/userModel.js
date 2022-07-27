@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, lowercase: true, unique: true },
     password: { type: String, required: true },
-    //resetToken: { type: String, required: true },
-    // isverified: { type: Boolean, default: false },
+
+    // isVerified: { type: Boolean, default: false },
     // date: { type: Date, default: Date.now },
     isAdmin: { type: Boolean, default: false, required: true },
     isSeller: { type: Boolean, default: false, required: true },

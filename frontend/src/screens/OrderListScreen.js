@@ -175,7 +175,7 @@ export default function OrderListScreen() {
               <Link
                 className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
                 key={x + 1}
-                to={`/users/admin?page=${x + 1}`}
+                to={`/orders/admin?page=${x + 1}`}
               >
                 {x + 1}
               </Link>

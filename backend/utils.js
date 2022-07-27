@@ -8,6 +8,7 @@ export function generateToken(user) {
       _id: user._id,
       name: user.name,
       email: user.email,
+      // isVerified: user.isVerified,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
     },
@@ -17,6 +18,31 @@ export function generateToken(user) {
     }
   );
 }
+//nodemailer
+// export const sendMail = async (email, subject, text) => {
+//   try {
+//     const transporter = nodemailer.createTransport({
+//       host: process.env.HOST,
+//       service: process.env.SERVICE,
+//       post: Number(process.env.EMAIL_PORT),
+//       secure: Boolean(process.env.SECURE),
+//       auth: {
+//         user: process.env.USER,
+//         pass: process.env.PASS,
+//       },
+//     });
+//     await transporter.sendMail({
+//       from: process.env.User,
+//       to: email,
+//       subject: subject,
+//       text: text,
+//     });
+//     console.log('Email sent successfully');
+//   } catch (error) {
+//     console.log('Email not sent');
+//     console.log(error);
+//   }
+// };
 
 export const isAuth = (req, res, next) => {
   const authorization = req.headers.authorization;
@@ -74,32 +100,32 @@ export const verifyEmail = (user) => {
   <a href="http://${req.headers.host}/user/verify-email?token=${user.emailToken}">verify your email</a>`;
 };
 
-export const sendEmail = async (email, subject, text) => {
-  try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.HOST,
-      service: process.env.SERVICE,
-      port: Number(process.env.EMAIL_PORT),
-      secure: Boolean(process.env.SECURE),
-      auth: {
-        user: process.env.USER,
-        pass: process.env.PASS,
-      },
-    });
+// export const sendEmail = async (email, subject, text) => {
+//   try {
+//     const transporter = nodemailer.createTransport({
+//       host: process.env.HOST,
+//       service: process.env.SERVICE,
+//       port: Number(process.env.EMAIL_PORT),
+//       secure: Boolean(process.env.SECURE),
+//       auth: {
+//         user: process.env.USER,
+//         pass: process.env.PASS,
+//       },
+//     });
 
-    await transporter.sendMail({
-      from: process.env.USER,
-      to: email,
-      subject: subject,
-      text: text,
-    });
-    console.log('email sent successfully');
-  } catch (error) {
-    console.log('email not sent!');
-    console.log(error);
-    return error;
-  }
-};
+//     await transporter.sendMail({
+//       from: process.env.USER,
+//       to: email,
+//       subject: subject,
+//       text: text,
+//     });
+//     console.log('email sent successfully');
+//   } catch (error) {
+//     console.log('email not sent!');
+//     console.log(error);
+//     return error;
+//   }
+// };
 
 export const mailgun = () =>
   mg({
