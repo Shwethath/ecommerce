@@ -56,8 +56,6 @@ export default function CartScreen() {
                     <Col md={3} sm={4} xs={4} lg={4}>
                       <img
                         src={item.image || item.images}
-                        width={100}
-                        height={50}
                         alt={item.name}
                         className="img-fluid rounded img-thumbnail"
                       ></img>

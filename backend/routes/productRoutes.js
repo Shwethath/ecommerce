@@ -54,28 +54,14 @@ productRouter.post(
   })
 );
 //sellerpage
-const SIZE = 2;
 productRouter.get(
   '/sellers/:id',
-  expressAsyncHandler(async (req, res) => {
-    const { query, params } = req;
-    const page = query.page || 1;
-    const pageSize = query.pageSize || SIZE;
-
-    const products = await Product.find({ seller: params.id })
-      .populate(
-        'seller',
-        'seller.name seller.logo seller.rating seller.numReviews'
-      )
-      .skip(pageSize * (page - 1))
-      .limit(pageSize);
-    const countProducts = await Product.countDocuments({});
-    res.send({
-      products,
-      countProducts,
-      page,
-      pages: Math.ceil(countProducts / pageSize),
-    });
+  expressAsyncHandler(async ({ params }, res) => {
+    const products = await Product.find({ seller: params.id }).populate(
+      'seller',
+      'seller.name seller.logo seller.rating seller.numReviews'
+    );
+    res.send(products);
   })
 );
 const PAGE_SIZE = 4;

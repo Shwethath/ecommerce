@@ -102,9 +102,12 @@ button .outline-primary {
   margin-top: 30px;
 }
 .img-thumbnail {
-  min-height: 80px;
+  height: 80px;
 }
 
+.m-thumbnail {
+  min-height: 40px;
+}
 .small-container {
   max-width: 600px;
 }
@@ -123,6 +126,7 @@ button .outline-primary {
 /* multiple images css*/
 .multi-img {
   transition: all 0.3s ease;
+  min-height: 40px;
 }
 .multi-img:hover {
   transform: scale(1.1);
@@ -196,7 +200,7 @@ button .outline-primary {
 /*Map css*/
 .full-box {
   height: 100vh;
-  width: 100;
+  width: 100%;
 }
 .full-container {
   margin: -rem;
@@ -248,7 +252,7 @@ button .thumbnail {
 /*carousel*/
 
 .carousel {
-  margin: 20px;
+  margin: 0px;
 }
 /*top products css*/
 .bg-tpcolor {
@@ -257,10 +261,19 @@ button .thumbnail {
 }
 .carousel .slide {
   background-color: #ffffff;
+  min-width: 300px;
+}
+
+.size-carousel {
+  min-width: 300px;
 }
 .carousel-slide img {
   width: 100%;
   max-width: 250px;
+  position: 'absolute';
+}
+.legend {
+  min-width: 200px;
 }
 .text-bold {
   font-weight: bold;

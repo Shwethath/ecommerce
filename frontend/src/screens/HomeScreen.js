@@ -73,8 +73,8 @@ function HomeScreen() {
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <>
-          <div className="carousel-slide container-fluid">
-            <Row className="col-md-12 text-left">
+          <div className="carousel-slide container-fluid size-carousel">
+            <Row className="col-md-6 justify-content-between text-left">
               <h3>Top Sellers</h3>
             </Row>
             {sellers.length === 0 && <MessageBox>No Seller Found</MessageBox>}
@@ -82,14 +82,15 @@ function HomeScreen() {
               showArrows={false}
               autoPlay
               infiniteLoop={true}
-              interval={1500}
+              interval={1300}
               showThumbs={false}
+              md={6}
             >
               {sellers.map((seller) => (
                 <div key={seller._id}>
                   <Link to={`/seller/${seller._id}`}>
                     <img src={seller.seller.logo} alt={seller.seller.name} />
-                    <p className="legend">{seller.seller.name}</p>
+                    <p className="legend size-carousel">{seller.seller.name}</p>
                   </Link>
                 </div>
               ))}

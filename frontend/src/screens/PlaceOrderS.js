@@ -127,19 +127,22 @@ export default function PlaceOrderS() {
                 {cart.cartItems.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
-                      <Col md={3} sm="3">
+                      <Col md={6} sm={3} xs={4}>
                         <img
                           src={item.image}
+                          width={70}
+                          height={50}
                           alt={item.name}
-                          className="img-fluid rounded img-thumbnail "
+                          className="img-fluid rounded md={4} img-thumbnail" //img-thumbnail
                         ></img>
+                        {''}
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
-                      <Col md={3} sm="4">
+                      <Col md={3} sm={4} xs={4}>
                         <span>Quantity</span>&nbsp;
                         <span>{item.quantity}</span>
                       </Col>
-                      <Col md={3} sm="4">
+                      <Col md={3} sm={4} xs={4}>
                         Price ₹{item.price}
                       </Col>
                     </Row>

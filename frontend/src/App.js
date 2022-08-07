@@ -7,7 +7,7 @@ import Nav from 'react-bootstrap/Nav';
 import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
 //import Navbarf from './components/Navbarf';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Store } from './Store';
 import CartScreen from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
@@ -45,6 +45,7 @@ import SellerProductlist from './screens/SellerProductlist';
 import SellerOrderlist from './screens/SellerOrderlist';
 import SupportScreen from './screens/SupportScreen';
 import Footer from './components/Footer';
+//import axios from 'axios';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -58,9 +59,9 @@ function App() {
     localStorage.removeItem('paymentMethod');
     window.location.href = '/login';
   };
-  //side bar nav
-  //const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-  // const [setCategories] = useState([]);
+  // side bar nav
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+  //const [categories, setCategories] = useState([]);
 
   // useEffect(() => {
   //   const fetchCategories = async () => {
@@ -79,20 +80,21 @@ function App() {
       <div
         className={
           fullBox
-            ? 'site-container d-flex flex-column active-cont full-box'
-            : 'site-container flex-column d-flex   '
-          // : fullBox
-          // ? 'site-container d-flex flex-column  full-box '
-          // : 'site-container flex-column d-flex '
+            ? fullBox
+              ? 'site-container d-flex flex-column active-cont full-box'
+              : 'site-container flex-column d-flex   '
+            : fullBox
+            ? 'site-container d-flex flex-column  full-box '
+            : 'site-container flex-column d-flex '
         }
       >
         <header>
           <Navbar expand="lg">
             <Container>
-              {/* <Button
+              <Button
                 variant="blue"
                 onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              ></Button> */}
+              ></Button>
               <Link to="/">
                 <Navbar.Brand>
                   <span className="white-color">Shopee Day</span>
@@ -173,14 +175,14 @@ function App() {
             </Container>
           </Navbar>
         </header>
-        {/* <div
+        <div
           className={
             sidebarIsOpen
               ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
               : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
           }
         >
-          <Nav className="flex-column text-white w-100 p-2">
+          {/* <Nav className="flex-column text-white w-100 p-2">
             <Nav.Item>
               <strong>Categories</strong>
             </Nav.Item>
@@ -190,12 +192,12 @@ function App() {
                   to={`/search?category=${category}`}
                   onClick={() => setSidebarIsOpen(false)}
                 >
-                  <NavLink>{category}</Nav.Link>
+                  <Link>{category}</Link>
                 </Link>
               </Nav.Item>
             ))}
-          </Nav>
-        </div> */}
+          </Nav> */}
+        </div>
         <main>
           <Container className="mt-3">
             <Routes>
@@ -207,6 +209,8 @@ function App() {
               <Route path="/shipping" element={<ShippingAddS />} />
               <Route path="/register" element={<SignupScreen />} />
               <Route path="/seller/:id" element={<SellerScreen />} />
+
+              <Route path="/products/sellers/:id" element={<SellerScreen />} />
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/payment" element={<PaymentScreen />} />
               <Route path="/placeorder" element={<PlaceOrderS />} />
@@ -256,6 +260,7 @@ function App() {
                   </SellerRoute>
                 }
               />
+
               <Route
                 path="/profile"
                 element={

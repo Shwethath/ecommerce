@@ -153,7 +153,7 @@ export const payOrderEmailTemplate = (order) => {
     <tr>
     <td>${item.name}</td>
     <td align="center">${item.quantity}</td>
-    <td align="right"> $${item.price.toFixed(2)}</td>
+    <td align="right"> ₹${item.price.toFixed(2)}</td>
     </tr>
   `
     )

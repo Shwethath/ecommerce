@@ -15,7 +15,6 @@ import Form from 'react-bootstrap/Form';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import ChatBox from '../components/ChatBox';
 
 //productdetails reducer in old amazona
 const reducer = (state, action) => {
@@ -44,7 +43,7 @@ function ProductScreen() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
-  const [size, setSize] = useState('');
+  //const [size, setSize] = useState('');
 
   const navigate = useNavigate();
   const params = useParams();
@@ -157,13 +156,13 @@ function ProductScreen() {
                     Price : ₹{product.price}
                   </Col>
                   <Col md={3} m={0} className="d-inline-block">
-                    <Form.Group controlId="size">
+                    {/* <Form.Group controlId="size">
                       <Form.Label>Size</Form.Label>
                       {/* <Form.Select>
                         {product.size.map((s) => (
                           <option key={s}>{s.size}</option>
                         ))}
-                      </Form.Select> */}
+                      </Form.Select> 
 
                       <Form.Select
                         aria-label="Size"
@@ -177,7 +176,7 @@ function ProductScreen() {
                         <option value="xl">XL</option>
                         <option value="xxl">XXL</option>
                       </Form.Select>
-                    </Form.Group>
+                    </Form.Group> */}
                   </Col>
                 </ListGroup.Item>
 
@@ -242,13 +241,13 @@ function ProductScreen() {
           </Row>
           <Row>
             <ListGroup>
-              <h4>Similar Products</h4>
+              <h4>Related personalized products</h4>
               <Row xs={4} md={5} m={0} className="g-2 ">
                 {[product.image, ...product.images].map((x) => (
                   <Col key={x}>
                     <Card className="multi-img p-2 ms-1 px-0">
                       <Button
-                        className="thumbnail"
+                        className="m-thumbnail"
                         type="button"
                         variant="light"
                         onClick={() => setSelectedImage(x)}
@@ -334,11 +333,6 @@ function ProductScreen() {
           </Col>
         </div>
       </Row>
-      <div className="justify-content-right" md={2} lg={4} sm={6}>
-        {userInfo && !userInfo.isAdmin && !userInfo.isSeller && (
-          <ChatBox userInfo={userInfo} />
-        )}
-      </div>
     </div>
   );
 }
