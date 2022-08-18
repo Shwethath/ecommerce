@@ -7,18 +7,18 @@ import Nav from 'react-bootstrap/Nav';
 import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
 //import Navbarf from './components/Navbarf';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Store } from './Store';
 import CartScreen from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import ShippingAddS from './screens/ShippingAddS';
 import SignupScreen from './screens/SignupScreen';
 import SearchBox from './components/SearchBox';
 import Button from 'react-bootstrap/Button';
-//import axios from 'axios';
+import axios from 'axios';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardScreen from './screens/DashboardScreen';
 import AdminRoute from './components/AdminRoute';
@@ -45,7 +45,9 @@ import SellerProductlist from './screens/SellerProductlist';
 import SellerOrderlist from './screens/SellerOrderlist';
 import SupportScreen from './screens/SupportScreen';
 import Footer from './components/Footer';
-//import axios from 'axios';
+import EmailVerify from './components/Emailverified';
+import ForgotPassword from './screens/ForgottPassword';
+import ResetPassword from './screens/ResetPasswordScreen';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -61,25 +63,25 @@ function App() {
   };
   // side bar nav
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-  //const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchCategories = async () => {
-  //     try {
-  //       const { data } = await axios.get(`/api/products/categories`);
-  //       setCategories(data);
-  //     } catch (err) {
-  //       toast.error(err.message);
-  //     }
-  //   };
-  //   fetchCategories();
-  // }, [ctxDispatch, setCategories]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/categories`);
+        setCategories(data);
+      } catch (err) {
+        toast.error(err.message);
+      }
+    };
+    fetchCategories();
+  }, [ctxDispatch, setCategories]);
   return (
     <BrowserRouter>
       <ToastContainer position="bottom-center" limit={0} />
       <div
         className={
-          fullBox
+          sidebarIsOpen
             ? fullBox
               ? 'site-container d-flex flex-column active-cont full-box'
               : 'site-container flex-column d-flex   '
@@ -110,7 +112,7 @@ function App() {
                   {userInfo ? (
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                       <Link to="/profile" className="dropdown-item">
-                        User Profile
+                        Profile Screen
                       </Link>
                       <Link to="/orderhistory" className="dropdown-item">
                         Order History
@@ -182,7 +184,7 @@ function App() {
               : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
           }
         >
-          {/* <Nav className="flex-column text-white w-100 p-2">
+          <Nav className="flex-column text-white w-100 p-2">
             <Nav.Item>
               <strong>Categories</strong>
             </Nav.Item>
@@ -192,11 +194,11 @@ function App() {
                   to={`/search?category=${category}`}
                   onClick={() => setSidebarIsOpen(false)}
                 >
-                  <Link>{category}</Link>
+                  <Nav.Link>{category}</Nav.Link>
                 </Link>
               </Nav.Item>
             ))}
-          </Nav> */}
+          </Nav>
         </div>
         <main>
           <Container className="mt-3">
@@ -206,10 +208,12 @@ function App() {
               <Route path="/product/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/login" element={<SigninScreen />} />
+              <Route path="/forgotpassword" element={<ForgotPassword />} />
+              <Route path="/reset/:token" element={<ResetPassword />} />
               <Route path="/shipping" element={<ShippingAddS />} />
               <Route path="/register" element={<SignupScreen />} />
               <Route path="/seller/:id" element={<SellerScreen />} />
-
+              <Route path="/login/verified" element={<EmailVerify />} />
               <Route path="/products/sellers/:id" element={<SellerScreen />} />
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/payment" element={<PaymentScreen />} />
@@ -307,9 +311,9 @@ function App() {
               <Route
                 path="/support"
                 element={
-                  <ProtectedRoute>
+                  <SellerRoute>
                     <SupportScreen />
-                  </ProtectedRoute>
+                  </SellerRoute>
                 }
               />
               <Route path="/order/details/:id" element={<OrderScreen />} />
@@ -330,8 +334,8 @@ function App() {
             className="text-center p-4 text-black"
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
           >
-            Created By <Link to="/"> Shwetha T H </Link> | © 2022 Copyright:
-            <Link className="text-reset fw-bold text-decoration-none" to="/">
+            Created By <Link to="#!"> Shwetha T H </Link> | © 2022 Copyright:
+            <Link className="text-reset fw-bold text-decoration-none" to="#!">
               All rights reserved.
             </Link>
           </div>

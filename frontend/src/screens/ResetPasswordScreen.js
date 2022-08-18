@@ -1,66 +1,59 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
-import { useContext, useEffect, useState } from 'react';
-import { Store } from '../Store';
+import { useState } from 'react';
+//import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { Col, Figure, Row } from 'react-bootstrap';
+import { getError } from '../utils';
 
-export default function SigninScreen() {
+export default function ResetPassword() {
   const navigate = useNavigate();
-  const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectInUrl ? redirectInUrl : '/';
 
-  const [email, setEmail] = useState('');
+  const params = useParams();
+  const { token } = params;
   const [password, setPassword] = useState('');
-
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     try {
-      const { data } = await axios.post('/api/users/login', {
-        email,
-        password,
-      });
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-      localStorage.setItem('userInfo', JSON.stringify(data));
-      navigate(redirect || '/');
-    } catch (err) {
-      toast.error('Invalid Username and Password');
+      if (password !== confirmPassword) {
+        toast.error('Passwords do not match');
+      } else {
+        const { data } = await axios.post('/api/users/reset-password', {
+          password,
+          token,
+        });
+        //ctxDispatch({ type: 'USER_SIGNIN', payload: data });
+        localStorage.setItem('userInfo', JSON.stringify(data));
+        toast.success('Reset Password successfully');
+        navigate('/login');
+      }
+    } catch (error) {
+      toast.error(getError(error));
     }
   };
-
-  useEffect(() => {
-    if (userInfo) {
-      navigate(redirect);
-    }
-  }, [navigate, redirect, userInfo]);
-
   return (
-    <Container className="small-container  container-up">
+    <Container className="small-container  forgot-mt-3 col-sm-10 container-up shadow p-3 mb-5 bg-white rounded mt-n1-2">
       <Helmet>
         <title>Reset Password </title>
       </Helmet>
-      <Row className="justify-content-center">
-        <Col className="login-image  col-md-6 shadow p-3 mb-5 bg-white rounded mt-n1-2">
+      <h2 className="my-3 text-center">Reset Password</h2>
+      <Row className="justify-content-center col-md-12 col-lg-12 ">
+        <Col sm={8} xs={8} className="login-image  col-md-6 lg-6 ">
           <Figure>
-            <img
-              src="../images/login.png"
-              alt="Login pic"
-              width={300}
-              height={300}
-            />
+            <img src="../forgot.jpg" alt="Login pic" width={300} height={200} />
           </Figure>
         </Col>
-        <Col className="  col-md-6  shadow p-3 mb-5 bg-white rounded mt-n1-2">
+        <Col sm={8} xs={8} className="  col-md-6 lg-6  ">
           <Form onSubmit={submitHandler}>
-            <h2 className="my-3 text-center">Login </h2>
             <Form.Group className="mb-3" controlId="password">
               <i className="zmdi zmdi-email material-icons-name"></i>
               <Form.Label>New password</Form.Label>
@@ -68,7 +61,7 @@ export default function SigninScreen() {
                 type="password"
                 placeholder="New password"
                 required
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="Cpassword">
@@ -76,19 +69,13 @@ export default function SigninScreen() {
               <Form.Label>Confirm Password</Form.Label>{' '}
               <Form.Control
                 type="password"
-                placeholder="confirm password"
+                placeholder="Confirm password"
                 required
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Form.Group>
             <div className="mb-3">
               <Button type="submit">Reset Password</Button>
-            </div>
-            <div className="mb-3">
-              New customer?{' '}
-              <Link to={`/register?redirect=${redirect}`}>
-                Create your account
-              </Link>
             </div>
           </Form>
         </Col>

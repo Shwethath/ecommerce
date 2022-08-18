@@ -11,7 +11,6 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Button from 'react-bootstrap/Button';
 import { getError } from '../utils';
-import { ToastContainer } from 'react-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -162,7 +161,7 @@ export default function ProductEditScreen() {
       <Helmet>
         <title>Edit Product ${productId}</title>
       </Helmet>
-      <ToastContainer limit={1} />
+
       <h4>Edit Product {productId}</h4>
 
       {loading ? (

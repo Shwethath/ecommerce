@@ -117,7 +117,7 @@ export default function ProfileScreen() {
       <Helmet>
         <title>User Profile</title>
       </Helmet>
-      <h3 className="my-3 text-center">User Profile</h3>
+      <h3 className="my-3 text-center">Profile</h3>
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (

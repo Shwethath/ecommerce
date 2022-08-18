@@ -124,6 +124,7 @@ export default function SupportScreen() {
       <Helmet>
         <title>Support</title>
       </Helmet>
+      <h3>Chat Screen</h3>
       <Col md={3} lg={3} xs={4} className="support-users">
         {users.filter((x) => x._id !== userInfo._id).length === 0 && (
           <MessageBox>No Online User Found</MessageBox>

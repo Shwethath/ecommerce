@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import mg from 'mailgun-js';
-import nodemailer from 'nodemailer';
 
 export function generateToken(user) {
   return jwt.sign(
@@ -8,7 +7,8 @@ export function generateToken(user) {
       _id: user._id,
       name: user.name,
       email: user.email,
-      // isVerified: user.isVerified,
+      resetToken: user.resetToken,
+      isVerified: user.isVerified,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
     },
@@ -18,31 +18,6 @@ export function generateToken(user) {
     }
   );
 }
-//nodemailer
-// export const sendMail = async (email, subject, text) => {
-//   try {
-//     const transporter = nodemailer.createTransport({
-//       host: process.env.HOST,
-//       service: process.env.SERVICE,
-//       post: Number(process.env.EMAIL_PORT),
-//       secure: Boolean(process.env.SECURE),
-//       auth: {
-//         user: process.env.USER,
-//         pass: process.env.PASS,
-//       },
-//     });
-//     await transporter.sendMail({
-//       from: process.env.User,
-//       to: email,
-//       subject: subject,
-//       text: text,
-//     });
-//     console.log('Email sent successfully');
-//   } catch (error) {
-//     console.log('Email not sent');
-//     console.log(error);
-//   }
-// };
 
 export const isAuth = (req, res, next) => {
   const authorization = req.headers.authorization;
@@ -61,6 +36,13 @@ export const isAuth = (req, res, next) => {
   }
 };
 
+export const isVerified = (req, res, next) => {
+  if (req.user && req.user.isVerified) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Verified Token' });
+  }
+};
 export const isAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
@@ -94,11 +76,11 @@ export const generateOTP = () => {
   return otp;
 };
 
-export const verifyEmail = (user) => {
-  return `<h1>${user.name}Thanks for Registering on our site</h1>
-  <h4>Please verify your mail to login</h4>
-  <a href="http://${req.headers.host}/user/verify-email?token=${user.emailToken}">verify your email</a>`;
-};
+// export const verifyEmail = (user) => {
+//   return `<h1>${user.name}Thanks for Registering on our site</h1>
+//   <h4>Please verify your mail to login</h4>
+//   <a href="http://${req.headers.host}/user/verify-email?token=${user.emailToken}">verify your email</a>`;
+// };
 
 // export const sendEmail = async (email, subject, text) => {
 //   try {
@@ -125,6 +107,35 @@ export const verifyEmail = (user) => {
 //     console.log(error);
 //     return error;
 //   }
+// userRouter.put(
+//   '/reset-password',
+//   expressAsyncHandler(async (req, res) => {
+//     const user = await User.findById(req.user._id);
+//     // const newPassword = req.body.password;
+//     const sentToken = req.body.resetToken;
+//     User.findOne({ resetToken: sentToken, expireToken: { $gt: Date.now() } }).t
+//     if (user) {
+//       user.resetToken = undefined;
+//       user.expireToken = undefined;
+//       if (req.body.password) {
+//         user.password = bcrypt.hashSync(req.body.password, 8);
+//       }
+//     }
+//     const updatedUser = user.save();
+//     res.send(
+//       {
+//         _id: updatedUser._id,
+//         resetToken: updatedUser.resetToken,
+//         expireToken: updatedUser.expireToken,
+//         token: generateToken(updatedUser),
+//       },
+//       'Password updated'
+//     );
+//   })
+//   // .catch((err) => {
+//   //   console.log(err);
+//   // });
+// );
 // };
 
 export const mailgun = () =>

@@ -148,7 +148,7 @@ export default function SearchScreen() {
           md={3}
           lg={2}
           sm={4}
-          xs={6}
+          xs={4}
           className="shadow p-3 mb-5 bg-white rounded text-decoration-none "
         >
           <h5>Categories</h5>

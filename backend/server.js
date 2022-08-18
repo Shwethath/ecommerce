@@ -124,7 +124,7 @@ io.on('connection', (socket) => {
       } else {
         io.to(socket.id).emit('message', {
           name: 'Seller',
-          body: 'Sorry. I am not online right now',
+          body: 'Sorry. Seller not online right now',
         });
       }
     }

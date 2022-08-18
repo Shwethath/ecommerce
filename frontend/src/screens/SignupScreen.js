@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -20,7 +20,7 @@ export default function SignupScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { state } = useContext(Store); //dispatch: ctxDispatch
   const { userInfo } = state;
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -29,16 +29,17 @@ export default function SignupScreen() {
       return;
     }
     try {
-      const { data } = await Axios.post('/api/users/register', {
+      const { data } = await axios.post('/api/users/register', {
         name,
         email,
         password,
       });
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
+      // ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
-      navigate(redirect || '/');
-    } catch (err) {
-      toast.error(err.message);
+      toast.success('Verification Link sent to your mail ');
+      navigate(`/login?redirect=${redirect}`);
+    } catch {
+      toast.error('User already registred');
     }
   };
 

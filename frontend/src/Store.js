@@ -4,8 +4,8 @@ export const Store = createContext();
 
 const initialState = {
   fullBox: false,
-  userInfo: localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
+  userInfo: localStorage.getItem('userInfo', 'token')
+    ? JSON.parse(localStorage.getItem('userInfo', 'token'))
     : null,
 
   cart: {

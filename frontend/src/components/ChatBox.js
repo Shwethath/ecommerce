@@ -54,7 +54,7 @@ export default function ChatBox(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     if (!messageBody.trim()) {
-      alert('Error. Please type message.');
+      alert('Please type message.');
     } else {
       setMessages([...messages, { body: messageBody, name: userInfo.name }]);
       setMessageBody('');

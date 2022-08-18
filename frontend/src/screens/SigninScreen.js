@@ -30,9 +30,10 @@ export default function SigninScreen() {
       });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
+      toast.success('Login success');
       navigate(redirect || '/');
     } catch (err) {
-      toast.error('Invalid Username and Password');
+      toast.error('Invalid Email id and Password');
     }
   };
 
@@ -90,6 +91,9 @@ export default function SigninScreen() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
+            <div className="mb-3 text-decoration-none ">
+              Forgotten password? <Link to={'/forgotpassword'}> reset</Link>
+            </div>
             <div className="mb-3">
               <Button type="submit">Login</Button>
             </div>

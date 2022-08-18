@@ -3,28 +3,27 @@ import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import Token from '../models/tokenModel.js';
-import { isAuth, generateToken, isSellerOrAdmin } from '../utils.js';
-//import crypto from 'crypto';
-
-//import nodemailer from 'nodemailer';
+import {
+  isAuth,
+  generateToken,
+  isSellerOrAdmin,
+  isVerified,
+} from '../utils.js';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
 
 const userRouter = express.Router();
 
-// const transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     user: 'shopeeday@gmail.com',
-//     pass: 'shopeeday',
-//   },
-// });
-// transporter.verify((error, success) => {
-//   if (error) {
-//     console.log(error);
-//   } else {
-//     console.log('Ready for messages');
-//     console.log(success);
-//   }
-// });
+const transport = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'shopeeday15@gmail.com',
+    pass: 'cymzlbxyawujggcj',
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
 
 userRouter.get(
   '/top-sellers',
@@ -173,9 +172,95 @@ userRouter.delete(
 );
 //login api
 
+export const verifyEmail = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user.isVerified == true) {
+      next();
+    } else {
+      res.status(401).send({ message: 'Please check your email to verify' });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//signup api
+userRouter.post(
+  '/register',
+  expressAsyncHandler(async (req, res) => {
+    const { name, email, password } = req.body;
+    User.findOne({ email: email }),
+      (user) => {
+        if (user) {
+          res.send({ message: 'User already registerd' });
+        }
+      };
+    const newUser = new User({
+      name,
+      email,
+      password: bcrypt.hashSync(password),
+      isVerified: false,
+    });
+    const user = await newUser.save(); // save to database and return to frontend
+    const token = await new Token({
+      userId: user._id,
+      token: crypto.randomBytes(32).toString('hex'),
+    }).save();
+    try {
+      var mailOptions = {
+        from: 'shopeeday<shopeeday15@gmail.com>',
+        to: `${user.name} <${user.email}>`,
+        subject: 'shopeeday - verify your email',
+        html: `<h3>${user.name}  Thanks for Registering on our site</h3>
+        <h4>Please verify your mail to login</h4>
+        <a href="http://${req.headers.host}/api/users/${user._id}/verify/${token.token}">Link to verify your email</a>
+        <p>Expires within an hour</p>`,
+      };
+      transport.sendMail(mailOptions, function (error, body) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('verification email sent ' + body);
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    res.send({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isVerified: user.isVerified,
+      token: generateToken(user),
+    });
+    //res.redirect('http://localhost:3000/login');
+  })
+);
+
+userRouter.get('/:id/verify/:token', async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.id });
+    if (!user) return res.status(400).send({ message: 'Invalid link' });
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.params.token,
+    });
+    if (!token) return res.status(400).send({ message: 'Invalid link' });
+    await User.updateOne({ _id: user._id }, { isVerified: true });
+
+    await token.remove();
+
+    // res.send('Email verified successfully');
+    res.redirect('http://localhost:3000/login/verified');
+  } catch (error) {
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+});
+
 userRouter.post(
   '/login',
-
+  //verifyEmail,
   expressAsyncHandler(async (req, res) => {
     try {
       const user = await User.findOne({ email: req.body.email });
@@ -185,11 +270,12 @@ userRouter.post(
             _id: user._id,
             name: user.name,
             email: user.email,
+            isVerified: user.isVerified,
             isAdmin: user.isAdmin,
             isSeller: user.isSeller,
             token: generateToken(user),
           });
-
+          res.status(200).send({ message: 'success ' });
           return;
         } else {
           res.status(401).send({ message: 'Invalid email or password' });
@@ -201,103 +287,75 @@ userRouter.post(
     }
   })
 );
-//nodemailer setup
-// const transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     user: 'shopeeday@gmail.com',
-//     pass: 'password',
-//   },
-// });
-
-//signup api
-userRouter.post(
-  '/register',
+userRouter.get(
+  '/forgot-password',
   expressAsyncHandler(async (req, res) => {
-    const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password),
-    });
-    // const OTP = generateOTP()
-    const user = await newUser.save();
-    const token = await new Token({
-      userId: user._id,
-      token: crypto.randomBytes(32).toString('hex'),
-    }).save();
-    const url = `${process.env.BASE_URL}users/${user._id}/verify/${token}`;
-    await sendEmail(user.email, 'verify Email', url);
-    res.send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      // isVerified: user.isVerified,
-      isAdmin: user.isAdmin,
-      isSeller: user.isSeller,
-      token: generateToken(user),
+    res.redirect('/forgot-password');
+  })
+);
+
+userRouter.post(
+  '/forgot-password',
+  expressAsyncHandler(async (req, res) => {
+    const token = crypto.randomBytes(32).toString('hex');
+    User.findOne({ email: req.body.email }).then((user) => {
+      if (!user) {
+        return res.status(422).send('User not exist');
+      }
+
+      user.resetToken = token;
+      user.expireToken = Date.now() + 36000;
+      user.save().then(() => {
+        var mailOptions = {
+          from: 'shopeeday<shopeeday15@gmail.com>',
+          to: `${user.name} <${user.email}>`,
+          subject: 'shopeeday - Password Reset',
+          html: `<h3>${user.name}  You request for password reset.</h3>
+              <h4>Please click button to reset password</h4>
+              <a href="http://localhost:3000/reset/${token}"><button>Reset</button></a>
+             `,
+        };
+        transport.sendMail(mailOptions, function (error, body) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Password reset email sent ' + body);
+          }
+        });
+        res.send({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          resetToken: user.resetToken,
+
+          token: generateToken(user),
+        });
+      });
     });
   })
 );
-// userRouter.get('/:id/verify/:token/', async (req, res) => {
-//   try {
-//     const user = await User.findOne({ _id: req.params.id });
-//     if (!user) return res.status(400).send({ message: 'Invalid link' });
-//     const token = await Token.findOne({
-//       userId: user._id,
-//       token: req.params.token,
-//     });
-//     if (!token) return res.status(400).send({ message: 'Invalid link' });
-//     await User.updateOne({ _id: user._id, isVerified: true });
-//     await token.remove();
+userRouter.post(
+  '/reset-password',
 
-//     res.status(200).send({ message: 'Email verified successfully' });
-//   } catch (error) {
-//     res.status(500).send({ message: 'Internal Server Error' });
-//   }
-// });
-// userRouter.get(
-//   '/forgot-password',
-//   expressAsyncHandler(async (req, res) => {})
-// );
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const token = req.query.token;
+      const tokenData = await User.findOne({ token: token });
+      if (tokenData) {
+        const password = req.body.password;
+        const newPassword = bcrypt.hashSync(password, 8);
+        const userData = await User.findByIdAndUpdate(
+          { _id: tokenData._id },
+          { $set: { password: newPassword, token: '' } },
+          { new: true }
+        );
 
-// userRouter.post(
-//   '/forgot-password',
-//   isAuth,
-//   expressAsyncHandler(async (req, res) => {
-//     const user = await User.findOne({ email: req.body.email });
-//     if (email !== user.email) {
-//       res.send('User not registered');
-//       return;
-//     } else {
-//       res.send({
-//         token: generateToken(user),
-//       });
-//     }
-//   })
-// );
-
-// userRouter.get(
-//   '/reset-password',
-//   isAuth,
-//   expressAsyncHandler(async (req, res) => {})
-// );
-
-// userRouter.post(
-//   '/reset-password',
-//   isAuth,
-//   expressAsyncHandler(async (req, res) => {})
-// );
+        res.send({ message: 'User Password has been reset', user: userData });
+        // res.status(200).send({"User Password has been reset"},  data: userData);
+      }
+    } catch (err) {
+      res.status(404).send(err);
+    }
+  })
+);
 export default userRouter;
-
-// save to database and return to frontend
-// try {
-//   transporter.sendMail({
-//     to: `${user.email}`,
-//     from: 'no-reply@shopeeday.com',
-//     subject: 'Login success',
-//     html: '<h3>Welcome to shopee Day website</h3>',
-//   });
-//   console.log('Message sent successfully ');
-// } catch (err) {
-//   console.log(err);
-// }

@@ -13,58 +13,58 @@ export default function Footer() {
         </div>
 
         <div>
-          <a
+          <Link
             className="btn btn-primary btn-floating m-1 p-2 btn-circle btn-sm"
             style={{ backgroundColor: '#3b5998' }}
-            href="#!"
+            to="#!"
             role="button"
           >
             <MDBIcon fab icon="facebook-f" />
-          </a>
+          </Link>
 
-          <a
+          <Link
             className="btn btn-primary btn-floating m-1 p-2 btn-circle btn-sm"
             style={{ backgroundColor: '#55acee' }}
-            href="#!"
+            to="#!"
             role="button"
           >
             <MDBIcon fab icon="twitter" />
-          </a>
+          </Link>
 
-          <a
+          <Link
             className="btn btn-primary btn-floating m-1 p-2 btn-circle btn-sm"
             style={{ backgroundColor: '#dd4b39' }}
-            href="#!"
+            to="#!"
             role="button"
           >
             <MDBIcon fab icon="google" />
-          </a>
-          <a
+          </Link>
+          <Link
             className="btn btn-primary btn-floating m-1 p-2 btn-circle btn-sm"
             style={{ backgroundColor: '#ac2bac' }}
-            href="#!"
+            to="#!"
             role="button"
           >
             <MDBIcon fab icon="instagram" />
-          </a>
+          </Link>
 
-          <a
+          <Link
             className="btn btn-primary btn-floating m-1 p-2 btn-circle btn-sm"
             style={{ backgroundColor: '#0082ca' }}
-            href="#!"
+            to="#!"
             role="button"
           >
             <MDBIcon fab icon="linkedin-in" />
-          </a>
+          </Link>
 
-          <a
+          <Link
             className="btn btn-primary btn-floating m-1 p-2 btn-circle btn-sm"
             style={{ backgroundColor: '#333333' }}
-            href="#!"
+            to="#!"
             role="button"
           >
             <MDBIcon fab icon="github" />
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -79,7 +79,7 @@ export default function Footer() {
                 E-commerce is revolutionizing the way we all shop in India. Why
                 do you want to hop from one store to another in search of the
                 latest phone when you can find it on the Internet in a single
-                click? Not only mobiles.
+                click?. Order for customized or personalized products.
               </p>
             </div>
 
@@ -102,7 +102,7 @@ export default function Footer() {
               </p>
               <p>
                 <Link to="#!" className="text-reset text-decoration-none">
-                  Jewelary
+                  Diy
                 </Link>
               </p>
             </div>

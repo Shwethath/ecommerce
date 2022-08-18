@@ -71,7 +71,7 @@ export default function SellerScreen() {
     <div>
       <h4 className="text-center">Seller brand and products screen</h4>
       <Row>
-        <Col md={3} sm={6} xs={6}>
+        <Col md={3} sm={12} xs={12}>
           <Card>
             <Card.Body>
               <img
@@ -93,11 +93,11 @@ export default function SellerScreen() {
             </Card.Body>
           </Card>
         </Col>
-        <Col md={9} sm={8} xs={6}>
+        <Col md={9} sm={12} xs={12}>
           {products.length === 0 && <MessageBox>No Product Found</MessageBox>}
           <Row>
             {products.map((product) => (
-              <Col sm={6} lg={4} className="mb-3" key={product._id}>
+              <Col sm={6} lg={4} xs={4} className="mb-3" key={product._id}>
                 <Product product={product}></Product>
               </Col>
             ))}
