@@ -99,7 +99,7 @@ function App() {
               ></Button>
               <Link to="/">
                 <Navbar.Brand>
-                  <span className="white-color">Shope Day</span>
+                  <span className="white-color">Shopee Day</span>
                 </Navbar.Brand>
               </Link>
               &nbsp;
