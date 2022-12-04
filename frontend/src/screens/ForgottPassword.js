@@ -1,21 +1,21 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { Helmet } from 'react-helmet-async';
-import { useContext, useEffect, useState } from 'react';
-import { Store } from '../Store';
-import { toast } from 'react-toastify';
-import { Col, Row } from 'react-bootstrap';
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { Helmet } from "react-helmet-async";
+import { useContext, useEffect, useState } from "react";
+import { Store } from "../Store";
+import { toast } from "react-toastify";
+import { Col, Row } from "react-bootstrap";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get('redirect');
-  const redirect = redirectInUrl ? redirectInUrl : '/reset-password';
+  const redirectInUrl = new URLSearchParams(search).get("redirect");
+  const redirect = redirectInUrl ? redirectInUrl : "/reset-password";
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   //const [password, setPassword] = useState('');
 
   const { state } = useContext(Store);
@@ -24,16 +24,16 @@ export default function ForgotPassword() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/users/forgot-password', {
+      const { data } = await axios.post("/api/users/forgot-password", {
         email,
       });
-      toast.success('Reset Link sent to your mail ');
+      toast.success("Reset Link sent to your mail ");
       //ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      localStorage.setItem("userInfo", JSON.stringify(data));
 
       //navigate('/reset-password');
     } catch {
-      toast.error('Invalid Email');
+      toast.error("User Not registered");
     }
   };
 
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
             <Form.Group className="mb-3 text-center" controlId="password">
               <i className="zmdi zmdi-email material-icons-name"></i>
               <Form.Label>
-                Enter your email address below to verify and reset password{' '}
+                Enter your email address below to verify and reset password{" "}
               </Form.Label>
               <Form.Control
                 type="email"

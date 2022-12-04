@@ -1,65 +1,65 @@
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
-import './index.css';
-import Container from 'react-bootstrap/Container';
-import HomeScreen from './screens/HomeScreen';
-import Badge from 'react-bootstrap/Badge';
-import Nav from 'react-bootstrap/Nav';
-import ProductScreen from './screens/ProductScreen';
-import Navbar from 'react-bootstrap/Navbar';
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import "./index.css";
+import Container from "react-bootstrap/Container";
+import HomeScreen from "./screens/HomeScreen";
+import Badge from "react-bootstrap/Badge";
+import Nav from "react-bootstrap/Nav";
+import ProductScreen from "./screens/ProductScreen";
+import Navbar from "react-bootstrap/Navbar";
 //import Navbarf from './components/Navbarf';
-import { useContext, useEffect, useState } from 'react';
-import { Store } from './Store';
-import CartScreen from './screens/CartScreen';
-import SigninScreen from './screens/SigninScreen';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import ShippingAddS from './screens/ShippingAddS';
-import SignupScreen from './screens/SignupScreen';
-import SearchBox from './components/SearchBox';
-import Button from 'react-bootstrap/Button';
-import axios from 'axios';
-import ProtectedRoute from './components/ProtectedRoute';
-import DashboardScreen from './screens/DashboardScreen';
-import AdminRoute from './components/AdminRoute';
+import { useContext, useEffect, useState } from "react";
+import { Store } from "./Store";
+import CartScreen from "./screens/CartScreen";
+import SigninScreen from "./screens/SigninScreen";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import ShippingAddS from "./screens/ShippingAddS";
+import SignupScreen from "./screens/SignupScreen";
+import SearchBox from "./components/SearchBox";
+import Button from "react-bootstrap/Button";
+import axios from "axios";
+import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardScreen from "./screens/DashboardScreen";
+import AdminRoute from "./components/AdminRoute";
 //import SellerDashboard from './screens/SellerDashboard';
 //import NavbarToggle from 'react-bootstrap/NavbarToggle';
 //import NavbarCollapse from 'react-bootstrap/NavbarCollapse';
-import SearchScreen from './screens/SearchScreen';
-import PaymentScreen from './screens/PaymentScreen';
-import PlaceOrderS from './screens/PlaceOrderS';
-import OrderScreen from './screens/OrderScreen';
-import OrderHistoryScreen from './screens/OrderHistoryScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import ProductListScreen from './screens/ProductListScreen';
-import ProductEditScreen from './screens/ProductEditScreen';
-import UserListScreen from './screens/UserListScreen';
-import OrderListScreen from './screens/OrderListScreen';
-import UserEditScreen from './screens/UserEditScreen';
+import SearchScreen from "./screens/SearchScreen";
+import PaymentScreen from "./screens/PaymentScreen";
+import PlaceOrderS from "./screens/PlaceOrderS";
+import OrderScreen from "./screens/OrderScreen";
+import OrderHistoryScreen from "./screens/OrderHistoryScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import ProductListScreen from "./screens/ProductListScreen";
+import ProductEditScreen from "./screens/ProductEditScreen";
+import UserListScreen from "./screens/UserListScreen";
+import OrderListScreen from "./screens/OrderListScreen";
+import UserEditScreen from "./screens/UserEditScreen";
 //import SupportScreen from './screens/SupportScreen';
-import MapScreen from './screens/MapScreen';
-import SellerRoute from './components/SellerRoutes';
-import SellerScreen from './screens/SellerScreen';
+import MapScreen from "./screens/MapScreen";
+import SellerRoute from "./components/SellerRoutes";
+import SellerScreen from "./screens/SellerScreen";
 //import ChatBox from './components/ChatBox';
-import SellerProductlist from './screens/SellerProductlist';
-import SellerOrderlist from './screens/SellerOrderlist';
-import SupportScreen from './screens/SupportScreen';
-import Footer from './components/Footer';
-import EmailVerify from './components/Emailverified';
-import ForgotPassword from './screens/ForgottPassword';
-import ResetPassword from './screens/ResetPasswordScreen';
+import SellerProductlist from "./screens/SellerProductlist";
+import SellerOrderlist from "./screens/SellerOrderlist";
+import SupportScreen from "./screens/SupportScreen";
+import Footer from "./components/Footer";
+import EmailVerify from "./components/Emailverified";
+import ForgotPassword from "./screens/ForgottPassword";
+import ResetPassword from "./screens/ResetPasswordScreen";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { fullBox, cart, userInfo } = state; //fullbox
 
   const logoutHandler = () => {
-    ctxDispatch({ type: 'USER_SIGNOUT' });
-    localStorage.removeItem('userInfo');
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
     // localStorage.removeItem('cartItems');
-    localStorage.removeItem('shippingAddress');
-    localStorage.removeItem('paymentMethod');
-    window.location.href = '/login';
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
+    window.location.href = "/login";
   };
   // side bar nav
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -83,11 +83,11 @@ function App() {
         className={
           sidebarIsOpen
             ? fullBox
-              ? 'site-container d-flex flex-column active-cont full-box'
-              : 'site-container flex-column d-flex   '
+              ? "site-container d-flex flex-column active-cont full-box"
+              : "site-container flex-column d-flex   "
             : fullBox
-            ? 'site-container d-flex flex-column  full-box '
-            : 'site-container flex-column d-flex '
+            ? "site-container d-flex flex-column  full-box "
+            : "site-container flex-column d-flex "
         }
       >
         <header>
@@ -99,7 +99,7 @@ function App() {
               ></Button>
               <Link to="/">
                 <Navbar.Brand>
-                  <span className="white-color">Shopee Day</span>
+                  <span className="white-color">Shope Day</span>
                 </Navbar.Brand>
               </Link>
               &nbsp;
@@ -180,8 +180,8 @@ function App() {
         <div
           className={
             sidebarIsOpen
-              ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
-              : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
+              ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column"
+              : "side-navbar d-flex justify-content-between flex-wrap flex-column"
           }
         >
           <Nav className="flex-column text-white w-100 p-2">
@@ -201,7 +201,7 @@ function App() {
           </Nav>
         </div>
         <main>
-          <Container className="mt-3">
+          <Container>
             <Routes>
               <Route path="/" element={<HomeScreen />} />
               <Route path="/" element={<Footer />} />
@@ -332,7 +332,7 @@ function App() {
         <footer className="footer">
           <div
             className="text-center p-4 text-black"
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
           >
             Created By <Link to="#!"> Shwetha T H </Link> | © 2022 Copyright:
             <Link className="text-reset fw-bold text-decoration-none" to="#!">
